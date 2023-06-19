@@ -14,14 +14,20 @@ export class DrawLine extends DrawBase {
     stage?.on('mousedown.drawLine', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0) return
 
-      startPos = getRelativePosition(e.evt)
-      line = new Line({
-        lineCap: 'round',
-        lineJoin: 'round',
-        ...this._options.nodeConfig,
-        points: [startPos.x, startPos.y, startPos.x, startPos.y]
-      })
-      this.rootGroup?.add(line)
+      if (!line) {
+        startPos = getRelativePosition(e.evt)
+        line = new Line({
+          lineCap: 'round',
+          lineJoin: 'round',
+          ...this._options.nodeConfig,
+          points: [startPos.x, startPos.y, startPos.x, startPos.y]
+        })
+        this.rootGroup?.add(line)
+      } else {
+        const oldPoints = line.points()
+        oldPoints.push(...oldPoints.slice(-2))
+        line.points(oldPoints)
+      }
     })
 
     stage?.on('mousemove.drawLine', (e: KonvaEventObject<MouseEvent>) => {
@@ -37,11 +43,13 @@ export class DrawLine extends DrawBase {
 
     stage?.on('contextmenu.drawLine', () => {
       this.finishDraw(line)
+      line = null
     })
     const handler = (ev: KeyboardEvent) => {
       if (ev.key !== 'Escape') return
 
       this.finishDraw(line)
+      line = null
     }
     document.addEventListener('keydown', handler)
     this.disposeEvents.push(() => document.removeEventListener('keydown', handler))
@@ -51,14 +59,13 @@ export class DrawLine extends DrawBase {
     if (!line) return
 
     const oldPoints = line.points()
-    if (oldPoints.length > 2) {
-      oldPoints.pop()
+    if (oldPoints.length > 4) {
+      oldPoints.splice(oldPoints.length - 2, 2)
       line.points(oldPoints)
       this.eventList.forEach(fn => fn(line!))
     } else {
-      line.remove().destroy()
+      line.destroy()
     }
-    line = null
   }
 
   protected unmount() {
