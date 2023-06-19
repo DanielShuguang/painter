@@ -13,7 +13,6 @@ export class DrawLine extends DrawBase {
 
     stage?.on('mousedown.drawLine', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0) return
-      console.log('mousedown line')
 
       startPos = getRelativePosition(e.evt)
       line = new Line({

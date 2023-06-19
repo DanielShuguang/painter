@@ -4,12 +4,14 @@ import { DrawCircle } from './circle'
 import { DrawRect } from './rect'
 import { Shape } from 'konva/lib/Shape'
 import { DrawLine } from './line'
+import { Circle12Regular, Line24Filled, RectangleLandscape12Regular } from '@vicons/fluent'
+import { Component } from 'vue'
 
 export class PaintFactory {
-  private static shapeMap = new Map<DrawShapeType, DrawBase>()
+  static shapeMap = new Map<DrawShapeType, { shape: DrawBase; icon: Component }>()
 
-  static registerShape(drawShape: DrawBase) {
-    this.shapeMap.set(drawShape.type, drawShape)
+  static registerShape(drawShape: DrawBase, icon: Component) {
+    this.shapeMap.set(drawShape.type, { shape: drawShape, icon })
   }
 
   private static instance?: PaintFactory
@@ -29,7 +31,7 @@ export class PaintFactory {
 
   setRoot(root: Group) {
     this.root = root
-    PaintFactory.shapeMap.forEach(ins => ins.setGroup(root))
+    PaintFactory.shapeMap.forEach(ins => ins.shape.setGroup(root))
 
     return this
   }
@@ -40,7 +42,7 @@ export class PaintFactory {
 
   drawListener(handler: (node: Shape) => void) {
     PaintFactory.shapeMap.forEach(ins => {
-      this.disposeEvents.push(ins.drawListener(handler))
+      this.disposeEvents.push(ins.shape.drawListener(handler))
     })
   }
 
@@ -50,8 +52,8 @@ export class PaintFactory {
     return this.activeType
   }
 
-  get shape() {
-    return this.activeType ? PaintFactory.shapeMap.get(this.activeType) : undefined
+  get currentShape() {
+    return this.activeType ? PaintFactory.shapeMap.get(this.activeType)?.shape : undefined
   }
 
   onChangeShape(callback: (type: DrawShapeType | null) => void) {
@@ -63,22 +65,22 @@ export class PaintFactory {
   }
 
   active(type: DrawShapeType) {
-    this.shape?.deactivate()
+    this.currentShape?.deactivate()
     this.activeType = type
-    this.shape?.activate()
+    this.currentShape?.activate()
     this.changeShapeEvents.forEach(fn => fn(this.activeType))
 
     return this
   }
 
   destroy() {
-    this.shape?.deactivate()
+    this.currentShape?.deactivate()
     this.disposeEvents.forEach(fn => fn())
 
     return this
   }
 }
 
-PaintFactory.registerShape(new DrawRect())
-PaintFactory.registerShape(new DrawCircle())
-PaintFactory.registerShape(new DrawLine())
+PaintFactory.registerShape(new DrawRect(), RectangleLandscape12Regular)
+PaintFactory.registerShape(new DrawCircle(), Circle12Regular)
+PaintFactory.registerShape(new DrawLine(), Line24Filled)
