@@ -33,8 +33,7 @@ export class DrawCircle extends DrawBase {
         ...this._options.nodeConfig,
         ...startPos
       })
-      this.rootGroup?.add(startPoint)
-      this.rootGroup?.add(circle)
+      this.rootGroup?.add(startPoint).add(circle)
     })
 
     stage?.on('mousemove.drawCircle', (e: KonvaEventObject<MouseEvent>) => {

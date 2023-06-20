@@ -4,12 +4,13 @@ import { Layer } from 'konva/lib/Layer'
 import { Stage } from 'konva/lib/Stage'
 import { inject, shallowRef } from 'vue'
 import { DrawShapeType } from '../../paint-factory'
-import { usePaintBoardSize } from './composition'
+import { usePaintBoardSize, useTextEditor } from './composition'
 import { FactoryKey } from '../Layout/composition'
 
 const stage = shallowRef<Stage | null>(null)
 
 const factory = inject(FactoryKey)
+const { showEditor, style, editorRef, inputValue } = useTextEditor()
 const { containerRef } = usePaintBoardSize(stage, () => stage.value && initStage(stage.value))
 
 function initStage(s: Stage) {
@@ -26,13 +27,35 @@ function initStage(s: Stage) {
 </script>
 
 <template>
-  <div class="paint-board" ref="containerRef" @contextmenu.prevent></div>
+  <div class="paint-board">
+    <div class="paint-container" ref="containerRef" @contextmenu.prevent></div>
+    <textarea
+      v-if="showEditor"
+      ref="editorRef"
+      class="canvas-input"
+      :style="style"
+      v-model="inputValue"
+    />
+  </div>
 </template>
 
 <style scoped lang="less">
 .paint-board {
+  position: relative;
   flex: auto;
   height: 100%;
   overflow: hidden;
+}
+
+.paint-container {
+  height: 100%;
+  width: 100%;
+}
+
+.canvas-input {
+  position: absolute;
+  z-index: 5;
+  resize: none;
+  border: none;
 }
 </style>

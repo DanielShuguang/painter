@@ -12,6 +12,7 @@ export enum DrawShapeType {
   Line = 'line',
   Circle = 'circle',
   Text = 'text',
+  Ellipse = 'ellipse',
   Curve = 'curve'
 }
 
@@ -21,7 +22,7 @@ export abstract class DrawBase {
   }
   protected rootGroup?: Group
   protected _isActive = false
-  protected eventList: Array<(shape: Shape) => void> = []
+  protected eventList: Array<(shape: Shape | Group) => void> = []
   protected disposeEvents: Array<() => void> = []
   abstract readonly type: DrawShapeType
 
@@ -39,7 +40,7 @@ export abstract class DrawBase {
     return this._isActive
   }
 
-  drawListener(handler: (node: Shape) => void) {
+  drawListener(handler: (node: Shape | Group) => void) {
     this.eventList.push(handler)
 
     return () => {
@@ -49,7 +50,7 @@ export abstract class DrawBase {
   }
 
   setOptions(options: DrawOptions) {
-    this._options = merge({}, options || {})
+    this._options = merge({}, this._options, options || {})
 
     return this
   }
@@ -71,6 +72,10 @@ export abstract class DrawBase {
     this.disposeEvents.forEach(fn => fn())
 
     return this
+  }
+
+  destroy() {
+    this.deactivate()
   }
 
   protected abstract mount(): void

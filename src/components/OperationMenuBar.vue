@@ -14,7 +14,12 @@ export default defineComponent({
     const factory = inject(FactoryKey)
 
     function handleChangeShape(type: DrawShapeType) {
-      factory?.active(type).currentShape?.setOptions({ nodeConfig: { stroke: colorValue.value } })
+      const shape = factory?.active(type).currentShape
+      if (type === DrawShapeType.Text) {
+        shape?.setOptions({ nodeConfig: { fill: colorValue.value } })
+      } else {
+        shape?.setOptions({ nodeConfig: { stroke: colorValue.value } })
+      }
     }
 
     function handleChangeColor() {
@@ -39,7 +44,7 @@ export default defineComponent({
               <span
                 class={classNames('shape-icon', { 'is-active': activeShape.value === k })}
                 key={k}
-                onClick={() => handleChangeShape(k)}
+                onClick={() => activeShape.value !== k && handleChangeShape(k)}
               >
                 <Icon>{h(v.icon)}</Icon>
               </span>
@@ -52,13 +57,11 @@ export default defineComponent({
 })
 </script>
 
-<!-- <template>
-</template> -->
-
 <style scoped lang="less">
 .operation-menu-bar {
   width: 200px;
   height: 100%;
+  margin-right: 3px;
 }
 
 .draw-shape-selection {
@@ -78,6 +81,7 @@ export default defineComponent({
 
   &.is-active {
     box-shadow: inset 0 0 4px green;
+    cursor: auto;
   }
 }
 </style>

@@ -19,7 +19,7 @@ export function useMountFactory() {
 
 export interface CacheItem {
   type: 'in' | 'out'
-  node: Shape
+  node: Shape | Group
 }
 
 export const DrawCacheKey: InjectionKey<ShallowRef<Readonly<CacheItem[]>>> = Symbol('draw-cache')
