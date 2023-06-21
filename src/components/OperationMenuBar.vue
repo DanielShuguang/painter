@@ -32,6 +32,7 @@ export default defineComponent({
 
     return () => (
       <div class="operation-menu-bar">
+        <div class="title">颜色</div>
         <NColorPicker
           v-model:value={colorValue.value}
           showAlpha={false}
@@ -39,6 +40,7 @@ export default defineComponent({
           onComplete={handleChangeColor}
         />
         <IconConfigProvider size="22" color="skyblue">
+          <div class="title">形状</div>
           <div class="draw-shape-selection">
             {Array.from(PaintFactory.shapeMap.entries()).map(([k, v]) => (
               <span
@@ -50,6 +52,7 @@ export default defineComponent({
               </span>
             ))}
           </div>
+          <div class="title"></div>
         </IconConfigProvider>
       </div>
     )
@@ -62,11 +65,18 @@ export default defineComponent({
   width: 200px;
   height: 100%;
   margin-right: 3px;
+  padding: 4px;
+  box-sizing: border-box;
 }
 
 .draw-shape-selection {
   display: flex;
   flex-wrap: wrap;
+}
+
+.title {
+  width: 100%;
+  padding: 5px;
 }
 
 .shape-icon {

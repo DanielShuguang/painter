@@ -1,4 +1,4 @@
-import { InjectionKey } from 'vue'
+import { InjectionKey, onMounted, onUnmounted } from 'vue'
 
 const eventMap = new Map<InjectionKey<unknown> | string, Function>()
 
@@ -36,5 +36,18 @@ export const eventBus = {
     }
     eventMap.clear()
     return true
+  }
+}
+
+export function useLocalEventBus<T extends any[]>(
+  event: InjectionKey<T> | string,
+  handler: (...args: T) => void
+) {
+  onMounted(() => eventBus.on(event, handler))
+
+  onUnmounted(() => eventBus.off(event))
+
+  return () => {
+    eventBus.off(event)
   }
 }

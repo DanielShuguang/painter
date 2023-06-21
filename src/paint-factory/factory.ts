@@ -91,6 +91,11 @@ export class PaintFactory {
     this.disposeEvents.push(() => {
       this.changeShapeEvents.length = 0
     })
+
+    return () => {
+      const index = this.changeShapeEvents.indexOf(callback)
+      this.changeShapeEvents.splice(index, 1)
+    }
   }
 
   active(type: DrawShapeType) {
@@ -100,6 +105,10 @@ export class PaintFactory {
     this.changeShapeEvents.forEach(fn => fn(this.activeType))
 
     return this
+  }
+
+  emit(event: string, params?: any) {
+    this.root?.getStage()?.fire(event, params)
   }
 
   destroy() {

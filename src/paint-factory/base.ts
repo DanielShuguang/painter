@@ -24,6 +24,9 @@ export abstract class DrawBase {
   protected _isActive = false
   protected eventList: Array<(shape: Shape | Group) => void> = []
   protected disposeEvents: Array<() => void> = []
+  private commands = new Map<string, Function>()
+  /** 用来执行需要 stage 的任务 */
+  protected lazyMissions = new Set<() => void>()
   abstract readonly type: DrawShapeType
 
   constructor(opt?: DrawOptions) {
@@ -32,6 +35,8 @@ export abstract class DrawBase {
 
   setGroup(group: Group) {
     this.rootGroup = group
+
+    this.lazyMissions.forEach(fn => fn())
 
     return this
   }
@@ -66,6 +71,21 @@ export abstract class DrawBase {
     return this
   }
 
+  protected registerCommands(key: string, handler: () => void) {
+    const stage = this.rootGroup?.getStage()
+
+    const mission = () => {
+      this.commands.set(key, handler)
+      this.rootGroup?.getStage()?.off(key).on(key, handler)
+    }
+
+    if (stage) {
+      mission()
+    } else {
+      this.lazyMissions.add(mission)
+    }
+  }
+
   deactivate() {
     this._isActive = false
     this.unmount()
@@ -76,6 +96,8 @@ export abstract class DrawBase {
 
   destroy() {
     this.deactivate()
+    this.commands.forEach((_, key) => this.rootGroup?.getStage()?.off(key))
+    this.commands.clear()
   }
 
   protected abstract mount(): void
