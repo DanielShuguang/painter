@@ -61,16 +61,14 @@ defineExpose({
   <slot v-bind="{ onContextmenu }"></slot>
 
   <Teleport to="body">
-    <Transition appear>
-      <div
-        v-if="showMenu"
-        ref="menuRef"
-        class="contextmenu-modal"
-        :style="{ transform: `translate(${position.join()})` }"
-      >
-        <NMenu :options="options" @update-value="handleSelect" />
-      </div>
-    </Transition>
+    <div
+      v-if="showMenu"
+      ref="menuRef"
+      class="contextmenu-modal"
+      :style="{ transform: `translate(${position.join()})` }"
+    >
+      <NMenu :options="options" @update-value="handleSelect" />
+    </div>
   </Teleport>
 </template>
 
