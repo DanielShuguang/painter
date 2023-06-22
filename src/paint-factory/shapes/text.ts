@@ -1,5 +1,5 @@
 import { Rect } from 'konva/lib/shapes/Rect'
-import { DrawBase, DrawOptions, DrawShapeType } from './base'
+import { DrawBase, DrawOptions, DrawShapeType } from '../base'
 import { Text, TextConfig } from 'konva/lib/shapes/Text'
 import { nanoid } from 'nanoid'
 import { KonvaEventObject } from 'konva/lib/Node'

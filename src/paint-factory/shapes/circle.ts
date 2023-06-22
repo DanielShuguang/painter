@@ -1,6 +1,6 @@
 import { KonvaEventObject } from 'konva/lib/Node'
-import { DrawBase, DrawShapeType } from './base'
-import { getRelativePosition } from '../utils/position'
+import { DrawBase, DrawShapeType } from '../base'
+import { getRelativePosition } from '@/utils/position'
 import { Circle } from 'konva/lib/shapes/Circle'
 
 export class DrawCircle extends DrawBase {

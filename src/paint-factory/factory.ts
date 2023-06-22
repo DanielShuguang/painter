@@ -1,9 +1,9 @@
 import { Group } from 'konva/lib/Group'
 import { DrawBase, DrawShapeType } from './base'
-import { DrawCircle } from './circle'
-import { DrawRect } from './rect'
+import { DrawCircle } from './shapes/circle'
+import { DrawRect } from './shapes/rect'
 import { Shape } from 'konva/lib/Shape'
-import { DrawLine } from './line'
+import { DrawLine } from './shapes/line'
 import {
   Circle12Regular,
   DrawText20Regular,
@@ -12,8 +12,8 @@ import {
   RectangleLandscape12Regular
 } from '@vicons/fluent'
 import { Component } from 'vue'
-import { DrawEllipse } from './ellipse'
-import { DrawText } from './text'
+import { DrawEllipse } from './shapes/ellipse'
+import { DrawText } from './shapes/text'
 
 export class PaintFactory {
   static shapeMap = new Map<DrawShapeType, { shape: DrawBase; icon: Component }>()

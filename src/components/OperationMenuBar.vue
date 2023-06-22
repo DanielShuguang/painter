@@ -16,14 +16,14 @@ export default defineComponent({
     function handleChangeShape(type: DrawShapeType) {
       const shape = factory?.active(type).currentShape
       if (type === DrawShapeType.Text) {
-        shape?.setOptions({ nodeConfig: { fill: colorValue.value } })
+        shape?.options({ nodeConfig: { fill: colorValue.value } })
       } else {
-        shape?.setOptions({ nodeConfig: { stroke: colorValue.value } })
+        shape?.options({ nodeConfig: { stroke: colorValue.value } })
       }
     }
 
     function handleChangeColor() {
-      factory?.currentShape?.setOptions({ nodeConfig: { stroke: colorValue.value } })
+      factory?.currentShape?.options({ nodeConfig: { stroke: colorValue.value } })
     }
 
     factory?.onChangeShape(type => {

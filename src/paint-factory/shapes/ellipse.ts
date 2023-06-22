@@ -1,5 +1,5 @@
 import { Ellipse } from 'konva/lib/shapes/Ellipse'
-import { DrawBase, DrawShapeType } from './base'
+import { DrawBase, DrawShapeType } from '../base'
 import { Circle } from 'konva/lib/shapes/Circle'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { getRelativePosition } from '@/utils/position'

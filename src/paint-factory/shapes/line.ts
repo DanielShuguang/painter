@@ -1,5 +1,5 @@
 import { KonvaEventObject } from 'konva/lib/Node'
-import { DrawBase, DrawShapeType } from '.'
+import { DrawBase, DrawShapeType } from '..'
 import { getRelativePosition } from '@/utils/position'
 import { Line } from 'konva/lib/shapes/Line'
 

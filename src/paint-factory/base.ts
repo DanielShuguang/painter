@@ -2,6 +2,7 @@ import Konva from 'konva'
 import { Group } from 'konva/lib/Group'
 import { Shape } from 'konva/lib/Shape'
 import { merge } from 'lodash-es'
+import { CommandService } from './command'
 
 export interface DrawOptions {
   nodeConfig: Konva.NodeConfig
@@ -24,9 +25,7 @@ export abstract class DrawBase {
   protected _isActive = false
   protected eventList: Array<(shape: Shape | Group) => void> = []
   protected disposeEvents: Array<() => void> = []
-  private commands = new Map<string, Function>()
-  /** 用来执行需要 stage 的任务 */
-  protected lazyMissions = new Set<() => void>()
+  private commandService = new CommandService()
   abstract readonly type: DrawShapeType
 
   constructor(opt?: DrawOptions) {
@@ -36,7 +35,7 @@ export abstract class DrawBase {
   setGroup(group: Group) {
     this.rootGroup = group
 
-    this.lazyMissions.forEach(fn => fn())
+    this.commandService.activeCommands(group)
 
     return this
   }
@@ -54,14 +53,15 @@ export abstract class DrawBase {
     }
   }
 
-  setOptions(options: DrawOptions) {
-    this._options = merge({}, this._options, options || {})
-
-    return this
-  }
-
-  getOptions() {
-    return this._options
+  options(options: DrawOptions): this
+  options(): DrawOptions
+  options(options?: DrawOptions) {
+    if (options) {
+      this._options = merge({}, this._options, options)
+      return this
+    } else {
+      return this._options
+    }
   }
 
   activate() {
@@ -71,19 +71,8 @@ export abstract class DrawBase {
     return this
   }
 
-  protected registerCommands(key: string, handler: () => void) {
-    const stage = this.rootGroup?.getStage()
-
-    const mission = () => {
-      this.commands.set(key, handler)
-      this.rootGroup?.getStage()?.off(key).on(key, handler)
-    }
-
-    if (stage) {
-      mission()
-    } else {
-      this.lazyMissions.add(mission)
-    }
+  protected registerCommand(key: string, handler: () => void) {
+    this.commandService.registerCommand(key, handler)
   }
 
   deactivate() {
@@ -96,8 +85,7 @@ export abstract class DrawBase {
 
   destroy() {
     this.deactivate()
-    this.commands.forEach((_, key) => this.rootGroup?.getStage()?.off(key))
-    this.commands.clear()
+    this.commandService.cleanCommands()
   }
 
   protected abstract mount(): void

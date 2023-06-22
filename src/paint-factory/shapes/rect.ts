@@ -1,5 +1,5 @@
-import { DrawBase, DrawShapeType } from './base'
-import { getRelativePosition } from '../utils/position'
+import { DrawBase, DrawShapeType } from '../base'
+import { getRelativePosition } from '../../utils/position'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { Rect } from 'konva/lib/shapes/Rect'
 
