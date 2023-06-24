@@ -3,6 +3,7 @@ import { Group } from 'konva/lib/Group'
 import { Shape } from 'konva/lib/Shape'
 import { merge } from 'lodash-es'
 import { CommandService } from './command'
+import { ContextmenuService } from './contextmenu'
 
 export interface DrawOptions {
   nodeConfig: Konva.NodeConfig
@@ -25,7 +26,8 @@ export abstract class DrawBase {
   protected _isActive = false
   protected eventList: Array<(shape: Shape | Group) => void> = []
   protected disposeEvents: Array<() => void> = []
-  private commandService = new CommandService()
+  private readonly commandService = new CommandService()
+  private readonly contextmenuService = new ContextmenuService()
   abstract readonly type: DrawShapeType
 
   constructor(opt?: DrawOptions) {
@@ -71,10 +73,6 @@ export abstract class DrawBase {
     return this
   }
 
-  protected registerCommand(key: string, handler: () => void) {
-    this.commandService.registerCommand(key, handler)
-  }
-
   deactivate() {
     this._isActive = false
     this.unmount()
@@ -86,6 +84,7 @@ export abstract class DrawBase {
   destroy() {
     this.deactivate()
     this.commandService.cleanCommands()
+    this.contextmenuService.cleanMenu()
   }
 
   protected abstract mount(): void

@@ -11,6 +11,8 @@ export class CommandService {
 
     this.lazyMissions.forEach(fn => fn())
     this.lazyMissions.clear()
+
+    return this
   }
 
   registerCommand(key: string, handler: () => void) {
@@ -26,10 +28,14 @@ export class CommandService {
     } else {
       this.lazyMissions.add(mission)
     }
+
+    return this
   }
 
   cleanCommands() {
     this.commands.forEach((_, key) => this.rootGroup?.getStage()?.off(key))
     this.commands.clear()
+
+    return this
   }
 }

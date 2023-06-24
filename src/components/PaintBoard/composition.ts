@@ -18,6 +18,8 @@ import { MenuOption } from 'naive-ui'
 import { FactoryKey } from '../Layout/composition'
 import { Vector2d } from 'konva/lib/types'
 
+export const RootGroupId = 'root-group'
+
 export function usePaintBoardSize(stage: ShallowRef<Stage | null>, resizeFn: () => void) {
   const containerRef = shallowRef<HTMLDivElement>()
 

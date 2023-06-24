@@ -4,7 +4,7 @@ import { Layer } from 'konva/lib/Layer'
 import { Stage } from 'konva/lib/Stage'
 import { inject, shallowRef } from 'vue'
 import { DrawShapeType } from '../../paint-factory'
-import { usePaintBoardSize, useStageContextmenu, useTextEditor } from './composition'
+import { RootGroupId, usePaintBoardSize, useStageContextmenu, useTextEditor } from './composition'
 import { FactoryKey } from '../Layout/composition'
 import Contextmenu from '../Contextmenu.vue'
 
@@ -21,7 +21,7 @@ function initStage(s: Stage) {
   })
   s.add(layer)
 
-  const rootGroup = new Group({ id: 'root-group' })
+  const rootGroup = new Group({ id: RootGroupId })
   layer.add(rootGroup)
 
   factory?.setRoot(rootGroup).active(DrawShapeType.Rect)

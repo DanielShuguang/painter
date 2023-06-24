@@ -1,4 +1,5 @@
 import { PaintFactory } from '@/paint-factory'
+import { useLocalEventBus } from '@/utils/eventBus'
 import { useDraggable, useEventListener } from '@vueuse/core'
 import { Group } from 'konva/lib/Group'
 import { Shape } from 'konva/lib/Shape'
@@ -24,6 +25,8 @@ export interface CacheItem {
 
 export const DrawCacheKey: InjectionKey<ShallowRef<Readonly<CacheItem[]>>> = Symbol('draw-cache')
 export const DrawBackupKey: InjectionKey<ShallowRef<Readonly<CacheItem[]>>> = Symbol('draw-backup')
+export const UpdateCacheEvent: InjectionKey<[CacheItem]> = Symbol('update-cache')
+
 const cacheCount = 20
 /**
  * 管理绘制缓存
@@ -50,6 +53,10 @@ export function useDrawCache(factory: PaintFactory) {
       // 恢复操作
       modifyCache(backup, cache, root)
     }
+  })
+
+  useLocalEventBus(UpdateCacheEvent, node => {
+    cache.value.push(node)
   })
 
   onMounted(() => {
