@@ -16,7 +16,8 @@ import {
 import Contextmenu from '../Contextmenu.vue'
 import { MenuOption } from 'naive-ui'
 import { FactoryKey } from '../Layout/composition'
-import { Vector2d } from 'konva/lib/types'
+import { KonvaEventObject, Node } from 'konva/lib/Node'
+import { getRelativePosition } from '@/utils/position'
 
 export const RootGroupId = 'root-group'
 
@@ -95,23 +96,26 @@ export function useTextEditor() {
   return { showEditor, style, editorRef, inputValue }
 }
 
-export const ContextmenuEvent: InjectionKey<[Vector2d, MenuOption[]]> = Symbol('contextmenu-event')
+export const ContextmenuEvent: InjectionKey<[KonvaEventObject<MouseEvent>, MenuOption[]]> =
+  Symbol('contextmenu-event')
 
 /** 控制舞台的右键菜单展示 */
 export function useStageContextmenu() {
   const menuRef = ref<InstanceType<typeof Contextmenu>>()
   const menuOptions = shallowRef<MenuOption[]>([])
+  const selectNode = shallowRef<Node | null>(null)
 
   const factory = inject(FactoryKey)
 
-  useLocalEventBus(ContextmenuEvent, (pos, opts) => {
-    menuRef.value?.show(pos)
+  useLocalEventBus(ContextmenuEvent, (e, opts) => {
+    menuRef.value?.show(getRelativePosition(e.evt))
+    selectNode.value = e.target
     menuOptions.value = opts
   })
 
   onMounted(() => {
     menuRef.value?.onSelect((_, item) => {
-      factory?.emit(item.key?.toString() ?? '')
+      factory?.emit(item.key?.toString() ?? '', selectNode.value)
     })
   })
 

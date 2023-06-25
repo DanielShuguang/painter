@@ -24,18 +24,16 @@ export class PaintFactory {
 
   private static instance?: PaintFactory
 
-  static getInstance() {
-    if (!this.instance) {
-      this.instance = new PaintFactory()
-    }
-    return this.instance
-  }
-
   private root?: Group
   private disposeEvents: Array<() => void> = []
   private changeShapeEvents: Array<(type: DrawShapeType | null) => void> = []
 
-  private constructor() {}
+  constructor() {
+    if (!PaintFactory.instance) {
+      PaintFactory.instance = this
+    }
+    return PaintFactory.instance
+  }
 
   setRoot(root: Group) {
     this.root = root

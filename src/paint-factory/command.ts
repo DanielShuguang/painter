@@ -1,10 +1,20 @@
 import { Group } from 'konva/lib/Group'
+import { Node } from 'konva/lib/Node'
 
 export class CommandService {
+  private static instance?: CommandService
+
   private commands = new Map<string, Function>()
   private rootGroup?: Group
   /** 用来执行需要 stage 的任务 */
   protected lazyMissions = new Set<() => void>()
+
+  constructor() {
+    if (!CommandService.instance) {
+      CommandService.instance = this
+    }
+    return CommandService.instance
+  }
 
   activeCommands(group: Group) {
     this.rootGroup = group
@@ -15,12 +25,15 @@ export class CommandService {
     return this
   }
 
-  registerCommand(key: string, handler: () => void) {
+  registerCommand(key: string, handler: (node: Node) => void) {
     const stage = this.rootGroup?.getStage()
 
     const mission = () => {
       this.commands.set(key, handler)
-      this.rootGroup?.getStage()?.off(key).on(key, handler)
+      this.rootGroup
+        ?.getStage()
+        ?.off(key)
+        .on(key, (e: any) => handler(e))
     }
 
     if (stage) {

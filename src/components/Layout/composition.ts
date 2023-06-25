@@ -3,11 +3,16 @@ import { useLocalEventBus } from '@/utils/eventBus'
 import { useDraggable, useEventListener } from '@vueuse/core'
 import { Group } from 'konva/lib/Group'
 import { Shape } from 'konva/lib/Shape'
+import { DialogOptions } from 'naive-ui/es/dialog/src/DialogProvider'
 import { InjectionKey, ShallowRef, onMounted, onUnmounted, provide, ref, shallowRef } from 'vue'
+
+export const ShowDialogEvent: InjectionKey<
+  ['success' | 'warning' | 'error' | 'info', DialogOptions]
+> = Symbol('show-dialog-event')
 
 export const FactoryKey: InjectionKey<Readonly<PaintFactory>> = Symbol('paint-factory')
 export function useMountFactory() {
-  const factory = PaintFactory.getInstance()
+  const factory = new PaintFactory()
 
   provide(FactoryKey, factory)
 
@@ -26,6 +31,7 @@ export interface CacheItem {
 export const DrawCacheKey: InjectionKey<ShallowRef<Readonly<CacheItem[]>>> = Symbol('draw-cache')
 export const DrawBackupKey: InjectionKey<ShallowRef<Readonly<CacheItem[]>>> = Symbol('draw-backup')
 export const UpdateCacheEvent: InjectionKey<[CacheItem]> = Symbol('update-cache')
+export const CleanCacheEvent: InjectionKey<[]> = Symbol('clean-cache')
 
 const cacheCount = 20
 /**
@@ -57,6 +63,11 @@ export function useDrawCache(factory: PaintFactory) {
 
   useLocalEventBus(UpdateCacheEvent, node => {
     cache.value.push(node)
+  })
+
+  useLocalEventBus(CleanCacheEvent, () => {
+    cache.value.length = 0
+    backup.value.length = 0
   })
 
   onMounted(() => {

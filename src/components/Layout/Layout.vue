@@ -1,12 +1,18 @@
 <script lang="ts" setup>
 import PaintBoard from '../PaintBoard/PaintBoard.vue'
 import OperationMenuBar from '../OperationMenuBar.vue'
-import { useDrawCache, useMountFactory, useSplitDrag } from './composition'
+import { ShowDialogEvent, useDrawCache, useMountFactory, useSplitDrag } from './composition'
+import { useDialog } from 'naive-ui'
+import { useLocalEventBus } from '@/utils/eventBus'
 
 const { factory } = useMountFactory()
 useDrawCache(factory)
 
 const { dragRef, style, x, handleReset } = useSplitDrag()
+
+const dialog = useDialog()
+
+useLocalEventBus(ShowDialogEvent, (type, opt) => dialog[type](opt))
 </script>
 
 <template>
