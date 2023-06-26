@@ -57,13 +57,9 @@ export function useTextEditor() {
     editorRef.value?.addEventListener('keyup', ev => {
       if (ev.key === 'Escape') {
         showEditor.value = false
-      } else if (ev.key === 'Enter') {
-        if (ev.ctrlKey) {
-          inputValue.value += '\n'
-        } else {
-          eventBus.emit(SaveTextEvent, activeId.value, inputValue.value)
-          showEditor.value = false
-        }
+      } else if (ev.key === 'Enter' && ev.ctrlKey) {
+        eventBus.emit(SaveTextEvent, activeId.value, inputValue.value)
+        showEditor.value = false
       }
     })
   }
