@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { onClickOutside } from '@vueuse/core'
+import { onClickOutside, onKeyDown } from '@vueuse/core'
 import { NMenu, MenuOption } from 'naive-ui'
 import { Vector2d } from 'konva/lib/types'
 
@@ -24,6 +24,7 @@ const position = ref(['0', '0'])
 const selectEvents: Array<(val: string | number, item: MenuOption) => void> = []
 
 onClickOutside(menuRef, hide)
+onKeyDown('Escape', hide)
 
 function onContextmenu(ev: MouseEvent) {
   show({ x: ev.clientX, y: ev.clientY })
