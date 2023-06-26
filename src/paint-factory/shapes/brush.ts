@@ -1,5 +1,5 @@
 import { KonvaEventObject } from 'konva/lib/Node'
-import { DrawBase, DrawOptions, DrawShapeType } from '..'
+import { DrawBase, DrawOptions, DrawShapeType } from '../base'
 import { getStagePosition } from '@/utils/position'
 import { Vector2d } from 'konva/lib/types'
 import { isEqual } from 'lodash-es'
