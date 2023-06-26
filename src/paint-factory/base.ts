@@ -1,4 +1,3 @@
-import Konva from 'konva'
 import { Group } from 'konva/lib/Group'
 import { Shape } from 'konva/lib/Shape'
 import { merge } from 'lodash-es'
@@ -7,12 +6,12 @@ import { ContextmenuOption, ContextmenuService } from './contextmenu'
 import { Stage } from 'konva/lib/Stage'
 import { Layer } from 'konva/lib/Layer'
 import { RootGroupId } from '@/components/PaintBoard/composition'
-import { Node } from 'konva/lib/Node'
+import { Node, NodeConfig } from 'konva/lib/Node'
 import { eventBus } from '@/utils/eventBus'
 import { CleanCacheEvent, ShowDialogEvent, UpdateCacheEvent } from '@/components/Layout/composition'
 
-export interface DrawOptions {
-  nodeConfig: Konva.NodeConfig
+export interface DrawOptions<Config = NodeConfig> {
+  nodeConfig: Config
 }
 
 export enum DrawShapeType {
@@ -66,9 +65,9 @@ export abstract class DrawBase {
     }
   }
 
-  options(options: DrawOptions): this
-  options(): DrawOptions
-  options(options?: DrawOptions) {
+  options<Config = NodeConfig>(options: DrawOptions<Config>): this
+  options<Config = NodeConfig>(): DrawOptions<Config>
+  options<Config = NodeConfig>(options?: DrawOptions<Config>) {
     if (options) {
       this._options = merge({}, this._options, options)
       return this

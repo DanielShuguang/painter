@@ -23,8 +23,8 @@ const textName = 'text-content'
 export class DrawText extends DrawBase {
   readonly type = DrawShapeType.Text
 
-  protected _options: DrawOptions = {
-    nodeConfig: <TextConfig>{
+  protected _options: DrawOptions<TextConfig> = {
+    nodeConfig: {
       fill: '#000',
       fontFamily: 'monospace',
       padding: 4

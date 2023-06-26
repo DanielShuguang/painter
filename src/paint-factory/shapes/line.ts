@@ -1,10 +1,14 @@
 import { KonvaEventObject } from 'konva/lib/Node'
-import { DrawBase, DrawShapeType } from '..'
+import { DrawBase, DrawOptions, DrawShapeType } from '..'
 import { getRelativePosition } from '@/utils/position'
 import { Line } from 'konva/lib/shapes/Line'
+import { LineConfig } from 'konva/lib/shapes/Line'
 
 export class DrawLine extends DrawBase {
   readonly type = DrawShapeType.Line
+  protected _options: DrawOptions<LineConfig> = {
+    nodeConfig: { stroke: '#000', hitStrokeWidth: 10 }
+  }
 
   protected mount() {
     const stage = this.rootGroup?.getStage()
