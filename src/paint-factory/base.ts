@@ -10,7 +10,9 @@ import { Node, NodeConfig } from 'konva/lib/Node'
 import { eventBus } from '@/utils/eventBus'
 import { CleanCacheEvent, ShowDialogEvent, UpdateCacheEvent } from '@/components/Layout/composition'
 
-export interface DrawOptions<Config = NodeConfig> {
+export interface DrawOptions<Config extends NodeConfig = NodeConfig> {
+  brushWidth?: number
+  brushType?: 'round' | 'square'
   nodeConfig: Config
 }
 
@@ -20,7 +22,8 @@ export enum DrawShapeType {
   Circle = 'circle',
   Text = 'text',
   Ellipse = 'ellipse',
-  Curve = 'curve'
+  Curve = 'curve',
+  Brush = 'brush'
 }
 
 export abstract class DrawBase {
@@ -45,7 +48,7 @@ export abstract class DrawBase {
     this.commandService.activeCommands(group)
     this.contextmenuService.activeMenus(group)
     this.registerMenus(menu => this.contextmenuService.registerMenu(menu))
-    this.registerCommands((key, handler) => this.commandService.registerCommand(key, handler))
+    this.registerCommands((...args) => this.commandService.registerCommand(...args))
     registerCommonCommands(this.commandService)
     registerCommonMenus(this.contextmenuService)
 
@@ -65,9 +68,9 @@ export abstract class DrawBase {
     }
   }
 
-  options<Config = NodeConfig>(options: DrawOptions<Config>): this
-  options<Config = NodeConfig>(): DrawOptions<Config>
-  options<Config = NodeConfig>(options?: DrawOptions<Config>) {
+  options(options: DrawOptions): this
+  options(): DrawOptions
+  options(options?: DrawOptions) {
     if (options) {
       this._options = merge({}, this._options, options)
       return this
@@ -116,6 +119,11 @@ function commonSelector(node: Node) {
 
 function registerCommonMenus(service: ContextmenuService) {
   service
+    .registerMenu({
+      key: 'base-common:divider',
+      type: 'divider',
+      selector: commonSelector
+    })
     .registerMenu({
       key: 'base-common:delete',
       title: '删除',

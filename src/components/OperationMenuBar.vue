@@ -46,6 +46,7 @@ export default defineComponent({
               <span
                 class={classNames('shape-icon', { 'is-active': activeShape.value === k })}
                 key={k}
+                title={v.tip}
                 onClick={() => activeShape.value !== k && handleChangeShape(k)}
               >
                 <Icon>{h(v.icon)}</Icon>

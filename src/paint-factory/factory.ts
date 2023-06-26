@@ -1,25 +1,22 @@
 import { Group } from 'konva/lib/Group'
 import { DrawBase, DrawShapeType } from './base'
-import { DrawCircle } from './shapes/circle'
-import { DrawRect } from './shapes/rect'
-import { Shape } from 'konva/lib/Shape'
-import { DrawLine } from './shapes/line'
 import {
   Circle12Regular,
   DrawText20Regular,
   Line24Filled,
   Oval16Regular,
+  PaintBrush16Regular,
   RectangleLandscape12Regular
 } from '@vicons/fluent'
 import { Component } from 'vue'
-import { DrawEllipse } from './shapes/ellipse'
-import { DrawText } from './shapes/text'
+import { Shape } from 'konva/lib/Shape'
+import { DrawRect, DrawCircle, DrawLine, DrawEllipse, DrawText, DrawBrush } from './shapes'
 
 export class PaintFactory {
-  static shapeMap = new Map<DrawShapeType, { shape: DrawBase; icon: Component }>()
+  static shapeMap = new Map<DrawShapeType, { shape: DrawBase; icon: Component; tip?: string }>()
 
-  static registerShape(drawShape: DrawBase, icon: Component) {
-    this.shapeMap.set(drawShape.type, { shape: drawShape, icon })
+  static registerShape(drawShape: DrawBase, icon: Component, tip?: string) {
+    this.shapeMap.set(drawShape.type, { shape: drawShape, icon, tip })
   }
 
   private static instance?: PaintFactory
@@ -118,8 +115,9 @@ export class PaintFactory {
   }
 }
 
-PaintFactory.registerShape(new DrawRect(), RectangleLandscape12Regular)
-PaintFactory.registerShape(new DrawCircle(), Circle12Regular)
-PaintFactory.registerShape(new DrawLine(), Line24Filled)
-PaintFactory.registerShape(new DrawEllipse(), Oval16Regular)
-PaintFactory.registerShape(new DrawText(), DrawText20Regular)
+PaintFactory.registerShape(new DrawRect(), RectangleLandscape12Regular, '矩形')
+PaintFactory.registerShape(new DrawCircle(), Circle12Regular, '圆形')
+PaintFactory.registerShape(new DrawLine(), Line24Filled, '直线')
+PaintFactory.registerShape(new DrawEllipse(), Oval16Regular, '椭圆')
+PaintFactory.registerShape(new DrawText(), DrawText20Regular, '文字')
+PaintFactory.registerShape(new DrawBrush(), PaintBrush16Regular, '笔刷')
