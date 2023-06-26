@@ -1,6 +1,6 @@
 import { KonvaEventObject } from 'konva/lib/Node'
 import { DrawBase, DrawShapeType } from '../base'
-import { getRelativePosition } from '@/utils/position'
+import { getStagePosition } from '@/utils/position'
 import { Circle } from 'konva/lib/shapes/Circle'
 
 export class DrawCircle extends DrawBase {
@@ -23,7 +23,7 @@ export class DrawCircle extends DrawBase {
         return
       }
 
-      startPos = getRelativePosition(e.evt)
+      startPos = getStagePosition(e.evt)
       startPoint = new Circle({
         ...startPos,
         fill: '#000',
@@ -39,7 +39,7 @@ export class DrawCircle extends DrawBase {
     stage?.on('mousemove.drawCircle', (e: KonvaEventObject<MouseEvent>) => {
       if (!circle || !startPoint) return
 
-      const endPos = getRelativePosition(e.evt)
+      const endPos = getStagePosition(e.evt)
       const rectSize = {
         height: endPos.y - startPos.y,
         width: endPos.x - startPos.x

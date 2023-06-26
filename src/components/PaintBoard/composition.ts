@@ -17,7 +17,7 @@ import Contextmenu from '../Contextmenu.vue'
 import { MenuOption } from 'naive-ui'
 import { FactoryKey } from '../Layout/composition'
 import { KonvaEventObject, Node } from 'konva/lib/Node'
-import { getRelativePosition } from '@/utils/position'
+import { getStagePosition } from '@/utils/position'
 
 export const RootGroupId = 'root-group'
 
@@ -108,7 +108,7 @@ export function useStageContextmenu() {
   const factory = inject(FactoryKey)
 
   useLocalEventBus(ContextmenuEvent, (e, opts) => {
-    menuRef.value?.show(getRelativePosition(e.evt))
+    menuRef.value?.show(getStagePosition(e.evt))
     selectNode.value = e.target
     menuOptions.value = opts
   })

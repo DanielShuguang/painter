@@ -4,7 +4,7 @@ import { Text, TextConfig } from 'konva/lib/shapes/Text'
 import { nanoid } from 'nanoid'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { Group } from 'konva/lib/Group'
-import { getRelativePosition } from '@/utils/position'
+import { getStagePosition } from '@/utils/position'
 import { Vector2d } from 'konva/lib/types'
 import { InjectionKey } from 'vue'
 import { eventBus } from '@/utils/eventBus'
@@ -53,7 +53,7 @@ export class DrawText extends DrawBase {
       }
 
       eventBus.emit(HideTextEditorEvent)
-      startPos = getRelativePosition(e.evt)
+      startPos = getStagePosition(e.evt)
       group = new Group({ name: textGroupName, ...startPos })
       textBox = new Rect({ name: textRectName, stroke: activeStroke, dash: [10, 5] })
       group.add(textBox)
@@ -65,7 +65,7 @@ export class DrawText extends DrawBase {
     stage?.on('mousemove.drawText', (e: KonvaEventObject<MouseEvent>) => {
       if (!group || !text || !textBox) return
 
-      const endPos = getRelativePosition(e.evt)
+      const endPos = getStagePosition(e.evt)
       const size = {
         height: endPos.y - startPos.y,
         width: endPos.x - startPos.x
