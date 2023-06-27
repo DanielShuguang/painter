@@ -1,18 +1,25 @@
-import { DrawShapeType, DrawText, SaveTextEvent } from '@/paint-factory'
-import { eventBus } from '@/utils/eventBus'
+import { DrawCircle, DrawOptions, DrawShapeType } from '@/paint-factory'
 import { addStage } from './test-utils'
+import { CircleConfig } from 'konva/lib/shapes/Circle'
 
-describe('Draw text shape', () => {
+describe('Draw circle shape', () => {
   const { rootGroup, stage } = addStage()
-  const shape = new DrawText()
+  const shape = new DrawCircle()
 
-  it('init text shape', () => {
-    expect(shape.type).to.equal(DrawShapeType.Text)
+  it('init circle shape', () => {
+    expect(shape.type).toBe(DrawShapeType.Circle)
 
     shape.setGroup(rootGroup).activate()
 
     expect(shape.isActive()).toBeTruthy()
-    expect(eventBus.exist(SaveTextEvent)).toBeTruthy()
+  })
+
+  it('shape options', () => {
+    expect(shape.options()).toEqual(<DrawOptions>{ nodeConfig: { stroke: '#000' } })
+
+    shape.options(<DrawOptions<CircleConfig>>{ nodeConfig: { fill: 'red' } })
+
+    expect(shape.options().nodeConfig.fill).toEqual('red')
   })
 
   it('shape events', () => {
@@ -21,11 +28,11 @@ describe('Draw text shape', () => {
     expect(events.mousedown).toBeDefined()
     expect(events.mousemove).toBeDefined()
 
-    const mousedownEvent = events.mousedown.find(el => el.name === 'drawText')
+    const mousedownEvent = events.mousedown.find(el => el.name === 'drawCircle')
     expect(mousedownEvent).toBeDefined()
     expect(mousedownEvent?.handler).toBeTypeOf('function')
 
-    const mousemoveEvent = events.mousemove.find(el => el.name === 'drawText')
+    const mousemoveEvent = events.mousemove.find(el => el.name === 'drawCircle')
     expect(mousemoveEvent).toBeDefined()
     expect(mousemoveEvent?.handler).toBeTypeOf('function')
   })
@@ -41,7 +48,5 @@ describe('Draw text shape', () => {
     expect(events.mousemove).toBeUndefined()
 
     shape.destroy()
-
-    expect(eventBus.exist(SaveTextEvent)).toBeFalsy()
   })
 })

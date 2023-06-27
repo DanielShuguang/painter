@@ -1,6 +1,6 @@
 import { Group } from 'konva/lib/Group'
 import { Shape } from 'konva/lib/Shape'
-import { merge } from 'lodash-es'
+import { cloneDeep, merge } from 'lodash-es'
 import { CommandService } from './command'
 import { ContextmenuOption, ContextmenuService } from './contextmenu'
 import { Stage } from 'konva/lib/Stage'
@@ -75,7 +75,7 @@ export abstract class DrawBase {
       this._options = merge({}, this._options, options)
       return this
     } else {
-      return this._options
+      return cloneDeep(this._options)
     }
   }
 

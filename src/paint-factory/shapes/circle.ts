@@ -67,6 +67,6 @@ export class DrawCircle extends DrawBase {
     const stage = this.rootGroup?.getStage()
 
     stage?.off('mousedown.drawCircle')
-    stage?.off('mouseup.drawCircle')
+    stage?.off('mousemove.drawCircle')
   }
 }

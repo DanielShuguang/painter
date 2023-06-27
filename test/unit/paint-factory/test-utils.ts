@@ -2,7 +2,7 @@ import { Group } from 'konva/lib/Group'
 import { Layer } from 'konva/lib/Layer'
 import { Stage } from 'konva/lib/Stage'
 
-export function initTestStage() {
+export function addStage() {
   const root = document.createElement('div')
   root.id = 'draw-root'
   document.body.appendChild(root)

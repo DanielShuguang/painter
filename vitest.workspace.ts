@@ -1,7 +1,7 @@
 import { defineWorkspace } from 'vitest/config'
 
 export default defineWorkspace([
-  'src/*',
+  'packages/*',
   {
     // add "extends" to merge two configs together
     extends: './vite.config.ts',
