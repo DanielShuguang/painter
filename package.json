@@ -8,7 +8,7 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "test:unit": "vitest",
-    "coverage:unit": "vitest run --coverage",
+    "coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "report": "playwright show-report"
   },

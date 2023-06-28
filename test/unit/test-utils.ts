@@ -62,6 +62,14 @@ export function stageMouseMove(stage: Stage, pos: Vector2d) {
   )
 }
 
+export function stageMouseWheel(stage: Stage, times: number, direction: 'up' | 'down') {
+  for (let i = 0; i < times; i++) {
+    stage.dispatchEvent(
+      new WheelEvent('wheel', direction === 'up' ? { deltaY: -1 } : { deltaY: 1 })
+    )
+  }
+}
+
 export function withSetup<Return>(composable: () => Return) {
   let result: Return
   const app = createApp({
