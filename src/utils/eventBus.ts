@@ -36,6 +36,9 @@ export const eventBus = {
     }
     eventMap.clear()
     return true
+  },
+  size() {
+    return eventMap.size
   }
 }
 

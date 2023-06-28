@@ -68,6 +68,15 @@ export abstract class DrawBase {
     }
   }
 
+  get listeners() {
+    return this.eventList
+  }
+
+  cleanListeners() {
+    this.eventList.length = 0
+    return this
+  }
+
   options(options: DrawOptions): this
   options(): DrawOptions
   options(options?: DrawOptions) {
@@ -100,6 +109,7 @@ export abstract class DrawBase {
 
   destroy() {
     this.deactivate()
+    this.eventList.length = 0
     this.commandService.cleanCommands()
     this.contextmenuService.cleanMenu()
   }

@@ -16,9 +16,9 @@ export const HideTextEditorEvent: InjectionKey<[]> = Symbol('hide-text-editor')
 export const SaveTextEvent: InjectionKey<[string, string]> = Symbol('save-text')
 
 const activeStroke = '#ccc'
-const textGroupName = 'text-group'
-const textRectName = 'text-border-rect'
-const textName = 'text-content'
+export const textGroupName = 'text-group'
+export const textRectName = 'text-border-rect'
+export const textName = 'text-content'
 
 export class DrawText extends DrawBase {
   readonly type = DrawShapeType.Text
@@ -43,7 +43,6 @@ export class DrawText extends DrawBase {
 
       if (textBox && text && group) {
         openTextInput(group, textBox, text)
-        this.rootGroup?.add(group)
         this.eventList.forEach(fn => fn(group!))
         textBox.stroke('transparent')
         group = null

@@ -53,6 +53,6 @@ export class DrawRect extends DrawBase {
     const stage = this.rootGroup?.getStage()
 
     stage?.off('mousedown.drawRect')
-    stage?.off('mouseup.drawRect')
+    stage?.off('mousemove.drawRect')
   }
 }
