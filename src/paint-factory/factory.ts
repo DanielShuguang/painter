@@ -11,6 +11,7 @@ import {
 import { Component } from 'vue'
 import { Shape } from 'konva/lib/Shape'
 import { DrawRect, DrawCircle, DrawLine, DrawEllipse, DrawText, DrawBrush } from './shapes'
+import { Node } from 'konva/lib/Node'
 
 export class PaintFactory {
   static shapeMap = new Map<DrawShapeType, { shape: DrawBase; icon: Component; tip?: string }>()
@@ -102,8 +103,8 @@ export class PaintFactory {
     return this
   }
 
-  emit(event: string, params?: any) {
-    this.root?.getStage()?.fire(event, params)
+  emit(event: string, node: Node) {
+    this.root?.getStage()?.fire(event, node)
   }
 
   destroy() {

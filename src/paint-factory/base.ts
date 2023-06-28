@@ -127,6 +127,11 @@ function commonSelector(node: Node) {
   return !isMainContainer
 }
 
+export enum CommonCommands {
+  Delete = 'base-common:delete',
+  Clean = 'base-common:clean'
+}
+
 function registerCommonMenus(service: ContextmenuService) {
   service
     .registerMenu({
@@ -135,12 +140,12 @@ function registerCommonMenus(service: ContextmenuService) {
       selector: commonSelector
     })
     .registerMenu({
-      key: 'base-common:delete',
+      key: CommonCommands.Delete,
       label: '删除',
       selector: commonSelector
     })
     .registerMenu({
-      key: 'base-common:clean',
+      key: CommonCommands.Clean,
       label: '重置',
       selector: () => true
     })
@@ -148,8 +153,8 @@ function registerCommonMenus(service: ContextmenuService) {
 
 function registerCommonCommands(service: CommandService) {
   service
-    .registerCommand('base-common:delete', deleteShape)
-    .registerCommand('base-common:clean', cleanPainter)
+    .registerCommand(CommonCommands.Delete, deleteShape)
+    .registerCommand(CommonCommands.Clean, cleanPainter)
 }
 
 function deleteShape(node: Node) {

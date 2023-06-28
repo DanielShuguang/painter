@@ -111,7 +111,7 @@ export function useStageContextmenu() {
 
   onMounted(() => {
     menuRef.value?.onSelect((_, item) => {
-      factory?.emit(item.key?.toString() ?? '', selectNode.value)
+      selectNode.value && factory?.emit(item.key?.toString() ?? '', selectNode.value)
     })
   })
 
