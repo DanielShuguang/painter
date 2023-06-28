@@ -136,12 +136,12 @@ function registerCommonMenus(service: ContextmenuService) {
     })
     .registerMenu({
       key: 'base-common:delete',
-      title: '删除',
+      label: '删除',
       selector: commonSelector
     })
     .registerMenu({
       key: 'base-common:clean',
-      title: '重置',
+      label: '重置',
       selector: () => true
     })
 }
