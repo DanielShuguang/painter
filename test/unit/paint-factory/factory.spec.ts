@@ -6,7 +6,7 @@ import {
   DrawShapeType,
   PaintFactory
 } from '@/paint-factory'
-import { addStage, stageMouseClick, stageMouseMove, stageMouseWheel } from '../test-utils'
+import { addStage, stageMouseClick, stageMouseMove, stageWheel } from '../test-utils'
 import { Node } from 'konva/lib/Node'
 import { Circle } from 'konva/lib/shapes/Circle'
 import { Shape } from 'konva/lib/Shape'
@@ -63,7 +63,7 @@ describe('Shape factory test', () => {
   })
 
   it('factory scale event', async () => {
-    stageMouseWheel(stage, 5, 'up')
+    stageWheel(stage, 5, 'up')
     let scale = rootGroup.scale()!
     expect(+scale?.x.toFixed(2)).toBe(1 + 5 * 0.05)
     expect(+scale?.y.toFixed(2)).toBe(1 + 5 * 0.05)
@@ -73,7 +73,7 @@ describe('Shape factory test', () => {
     expect(+scale?.x.toFixed(2)).toBe(1)
     expect(+scale?.y.toFixed(2)).toBe(1)
 
-    stageMouseWheel(stage, 3, 'down')
+    stageWheel(stage, 3, 'down')
     scale = rootGroup.scale()!
     expect(+scale?.x.toFixed(2)).toBe(1 - 3 * 0.05)
     expect(+scale?.y.toFixed(2)).toBe(1 - 3 * 0.05)

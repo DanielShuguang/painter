@@ -13,7 +13,7 @@ export class DrawEllipse extends DrawBase {
     let ellipse: Ellipse | null = null
     let startPoint: Circle | null = null
 
-    stage?.on('mousedown.drawEllipse', (e: KonvaEventObject<MouseEvent>) => {
+    stage?.on('click.drawEllipse', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0) return
 
       if (ellipse && startPoint) {
@@ -73,7 +73,7 @@ export class DrawEllipse extends DrawBase {
   protected unmount() {
     const stage = this.rootGroup?.getStage()
 
-    stage?.off('mousedown.drawEllipse')
+    stage?.off('click.drawEllipse')
     stage?.off('mousemove.drawEllipse')
   }
 }

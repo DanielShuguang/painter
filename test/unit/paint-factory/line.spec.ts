@@ -31,12 +31,12 @@ describe('Draw line shape', () => {
   it('shape events', () => {
     const events = stage.eventListeners
 
-    expect(events.mousedown).toBeDefined()
+    expect(events.click).toBeDefined()
     expect(events.mousemove).toBeDefined()
 
-    const mousedownEvent = events.mousedown.find(el => el.name === 'drawLine')
-    expect(mousedownEvent).toBeDefined()
-    expect(mousedownEvent?.handler).toBeTypeOf('function')
+    const clickEvent = events.click.find(el => el.name === 'drawLine')
+    expect(clickEvent).toBeDefined()
+    expect(clickEvent?.handler).toBeTypeOf('function')
 
     const mousemoveEvent = events.mousemove.find(el => el.name === 'drawLine')
     expect(mousemoveEvent).toBeDefined()
@@ -74,7 +74,7 @@ describe('Draw line shape', () => {
 
     const events = stage.eventListeners
 
-    expect(events.mousedown).toBeUndefined()
+    expect(events.click).toBeUndefined()
     expect(events.mousemove).toBeUndefined()
 
     shape.destroy()

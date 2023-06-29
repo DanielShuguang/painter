@@ -27,21 +27,20 @@ export function wait(ms: number) {
 }
 
 export function stageMouseClick(stage: Stage, pos: Vector2d, type: 'click' | 'down' = 'click') {
-  stage.dispatchEvent(
-    new MouseEvent('mousedown', {
-      clientX: pos.x,
-      clientY: pos.y
-    })
-  )
-
   if (type === 'click') {
     stage.dispatchEvent(
-      new MouseEvent('mouseup', {
+      new MouseEvent('click', {
         clientX: pos.x,
         clientY: pos.y
       })
     )
   } else {
+    stage.dispatchEvent(
+      new MouseEvent('mousedown', {
+        clientX: pos.x,
+        clientY: pos.y
+      })
+    )
     return () => {
       stage.dispatchEvent(
         new MouseEvent('mouseup', {
@@ -62,7 +61,7 @@ export function stageMouseMove(stage: Stage, pos: Vector2d) {
   )
 }
 
-export function stageMouseWheel(stage: Stage, times: number, direction: 'up' | 'down') {
+export function stageWheel(stage: Stage, times: number, direction: 'up' | 'down') {
   for (let i = 0; i < times; i++) {
     stage.dispatchEvent(
       new WheelEvent('wheel', direction === 'up' ? { deltaY: -1 } : { deltaY: 1 })

@@ -11,7 +11,7 @@ export class DrawRect extends DrawBase {
     let rect: Rect | null = null
     const stage = this.rootGroup?.getStage()
 
-    stage?.on('mousedown.drawRect', (e: KonvaEventObject<MouseEvent>) => {
+    stage?.on('click.drawRect', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0) return
 
       if (rect) {
@@ -52,7 +52,7 @@ export class DrawRect extends DrawBase {
   protected unmount() {
     const stage = this.rootGroup?.getStage()
 
-    stage?.off('mousedown.drawRect')
+    stage?.off('click.drawRect')
     stage?.off('mousemove.drawRect')
   }
 }

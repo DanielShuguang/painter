@@ -36,12 +36,12 @@ describe('Draw circle shape', () => {
   it('shape events', () => {
     const events = stage.eventListeners
 
-    expect(events.mousedown).toBeDefined()
+    expect(events.click).toBeDefined()
     expect(events.mousemove).toBeDefined()
 
-    const mousedownEvent = events.mousedown.find(el => el.name === 'drawCircle')
-    expect(mousedownEvent).toBeDefined()
-    expect(mousedownEvent?.handler).toBeTypeOf('function')
+    const clickEvent = events.click.find(el => el.name === 'drawCircle')
+    expect(clickEvent).toBeDefined()
+    expect(clickEvent?.handler).toBeTypeOf('function')
 
     const mousemoveEvent = events.mousemove.find(el => el.name === 'drawCircle')
     expect(mousemoveEvent).toBeDefined()
@@ -74,7 +74,7 @@ describe('Draw circle shape', () => {
   })
 
   it('cancel drawing', () => {
-    stage.dispatchEvent(new MouseEvent('mousedown', { clientX: 400, clientY: 400 }))
+    stageMouseClick(stage, { x: 400, y: 400 })
 
     let circles = stage.find<Circle>('Circle')
     expect(circles.length).toBe(2)
@@ -93,7 +93,7 @@ describe('Draw circle shape', () => {
 
     const events = stage.eventListeners
 
-    expect(events.mousedown).toBeUndefined()
+    expect(events.click).toBeUndefined()
     expect(events.mousemove).toBeUndefined()
 
     shape.destroy()

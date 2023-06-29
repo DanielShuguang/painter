@@ -64,7 +64,8 @@ describe('Draw brush shape', () => {
 
     line1.destroy()
 
-    stageMouseClick(stage, { x: 100, y: 100 })
+    const finish = stageMouseClick(stage, { x: 100, y: 100 }, 'down')
+    finish?.()
     const line2 = stage.findOne<Line>('Line')
     expect(line2.points()).toEqual([100, 100, 100, 100])
 

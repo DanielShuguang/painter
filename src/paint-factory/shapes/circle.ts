@@ -12,7 +12,7 @@ export class DrawCircle extends DrawBase {
     let circle: Circle | null = null
     let startPoint: Circle | null = null
 
-    stage?.on('mousedown.drawCircle', (e: KonvaEventObject<MouseEvent>) => {
+    stage?.on('click.drawCircle', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0) return
 
       if (circle && startPoint) {
@@ -66,7 +66,7 @@ export class DrawCircle extends DrawBase {
   protected unmount() {
     const stage = this.rootGroup?.getStage()
 
-    stage?.off('mousedown.drawCircle')
+    stage?.off('click.drawCircle')
     stage?.off('mousemove.drawCircle')
   }
 }

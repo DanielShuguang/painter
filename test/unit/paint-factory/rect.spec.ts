@@ -25,12 +25,12 @@ describe('Draw rect shape', () => {
   it('shape events', () => {
     const events = stage.eventListeners
 
-    expect(events.mousedown).toBeDefined()
+    expect(events.click).toBeDefined()
     expect(events.mousemove).toBeDefined()
 
-    const mousedownEvent = events.mousedown.find(el => el.name === 'drawRect')
-    expect(mousedownEvent).toBeDefined()
-    expect(mousedownEvent?.handler).toBeTypeOf('function')
+    const clickEvent = events.click.find(el => el.name === 'drawRect')
+    expect(clickEvent).toBeDefined()
+    expect(clickEvent?.handler).toBeTypeOf('function')
 
     const mousemoveEvent = events.mousemove.find(el => el.name === 'drawRect')
     expect(mousemoveEvent).toBeDefined()
@@ -62,7 +62,7 @@ describe('Draw rect shape', () => {
   })
 
   it('cancel drawing', () => {
-    stage.dispatchEvent(new MouseEvent('mousedown', { clientX: 400, clientY: 400 }))
+    stageMouseClick(stage, { x: 400, y: 400 })
 
     let rect = stage.findOne<Rect>('Rect')
     expect(rect).toBeDefined()
@@ -81,7 +81,7 @@ describe('Draw rect shape', () => {
 
     const events = stage.eventListeners
 
-    expect(events.mousedown).toBeUndefined()
+    expect(events.click).toBeUndefined()
     expect(events.mousemove).toBeUndefined()
 
     shape.destroy()

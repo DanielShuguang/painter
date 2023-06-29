@@ -15,7 +15,7 @@ export class DrawLine extends DrawBase {
     let startPos = { x: 0, y: 0 }
     let line: Line | null = null
 
-    stage?.on('mousedown.drawLine', (e: KonvaEventObject<MouseEvent>) => {
+    stage?.on('click.drawLine', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0) return
 
       if (!line) {
@@ -74,7 +74,7 @@ export class DrawLine extends DrawBase {
 
   protected unmount() {
     const stage = this.rootGroup?.getStage()
-    stage?.off('mousedown.drawLine')
+    stage?.off('click.drawLine')
     stage?.off('mousemove.drawLine')
     stage?.off('contextmenu.drawLine')
   }

@@ -38,7 +38,7 @@ export class DrawText extends DrawBase {
     let textBox: Rect | null = null
     let text: Text | null = null
 
-    stage?.on('mousedown.drawText', (e: KonvaEventObject<MouseEvent>) => {
+    stage?.on('click.drawText', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0) return
 
       if (textBox && text && group) {
@@ -89,7 +89,7 @@ export class DrawText extends DrawBase {
   protected unmount() {
     const stage = this.rootGroup?.getStage()
 
-    stage?.off('mousedown.drawText').off('mousemove.drawText')
+    stage?.off('click.drawText').off('mousemove.drawText')
   }
 
   destroy() {
