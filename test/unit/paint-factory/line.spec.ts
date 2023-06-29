@@ -61,7 +61,7 @@ describe('Draw line shape', () => {
     drawLineShape(stage)
     const line2 = stage.findOne<Line>('Line')
     expect(line2.points()).toEqual([...points, 1000, 1000])
-    stage.dispatchEvent(new MouseEvent('contextmenu'))
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
     expect(line2.points()).toEqual(points)
 
     line2.destroy()

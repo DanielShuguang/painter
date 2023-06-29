@@ -26,7 +26,7 @@ export class ContextmenuService {
   activeMenus(group: Group) {
     this.rootGroup = group
     const stage = this.rootGroup.getStage()
-    stage?.on('contextmenu', e => {
+    stage?.off('contextmenu').on('contextmenu', e => {
       const menuList: MenuOption[] = []
 
       this.menuMap.forEach(menu => {

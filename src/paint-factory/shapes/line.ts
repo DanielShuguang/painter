@@ -45,12 +45,8 @@ export class DrawLine extends DrawBase {
       line.points(oldPoints)
     })
 
-    stage?.on('contextmenu.drawLine', () => {
-      this.finishDraw(line)
-      line = null
-    })
     const handler = (ev: KeyboardEvent) => {
-      if (ev.key !== 'Escape') return
+      if (!['Escape', 'Enter'].includes(ev.key)) return
 
       this.finishDraw(line)
       line = null
@@ -76,6 +72,5 @@ export class DrawLine extends DrawBase {
     const stage = this.rootGroup?.getStage()
     stage?.off('click.drawLine')
     stage?.off('mousemove.drawLine')
-    stage?.off('contextmenu.drawLine')
   }
 }
