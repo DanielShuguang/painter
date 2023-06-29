@@ -21,6 +21,8 @@ export class DrawBrush extends DrawBase {
     let isDrawing = false
 
     stage?.on('mousedown.drawBrush', (e: KonvaEventObject<MouseEvent>) => {
+      if (e.evt.button !== 0) return
+
       const position = getStagePosition(e.evt)
       lastPosition = position
       isDrawing = true
