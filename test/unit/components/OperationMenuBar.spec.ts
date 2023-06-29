@@ -44,6 +44,6 @@ describe('OperationMenuBar component test', () => {
     factory.active(DrawShapeType.Text)
     picker.getCurrentComponent().emit('update:value', color)
     picker.getCurrentComponent().emit('complete', color)
-    expect(factory.currentShape?.options().nodeConfig.stroke).toContain(color)
+    expect(factory.currentShape?.options().nodeConfig.fill).toContain(color)
   })
 })
