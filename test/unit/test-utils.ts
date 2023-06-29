@@ -4,14 +4,14 @@ import { Layer } from 'konva/lib/Layer'
 import { Stage } from 'konva/lib/Stage'
 import { Vector2d } from 'konva/lib/types'
 
-export function addStage() {
+export function addStage(size = { height: 2000, width: 2000 }) {
   const root = document.createElement('div')
   root.id = 'draw-root'
-  root.style.width = '2000px'
-  root.style.height = '2000px'
+  root.style.width = `${size.width}px`
+  root.style.height = `${size.height}px`
   document.body.appendChild(root)
 
-  const stage = new Stage({ container: root, height: 2000, width: 2000 })
+  const stage = new Stage({ container: root, ...size })
   const layer = new Layer({ id: 'main-layer' })
   stage.add(layer)
   const rootGroup = new Group({ id: 'main-group' })
