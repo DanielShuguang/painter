@@ -28,20 +28,22 @@ export function usePaintBoardSize(stage: ShallowRef<Stage | null>, resizeFn: () 
 
   const containerSize = computed(() => ({ height: height.value, width: width.value }))
 
-  watch(
-    containerSize,
-    size => {
-      if (!containerRef.value) return
-      if (!stage.value) {
-        stage.value = new Stage({
-          container: containerRef.value
-        })
-        resizeFn()
-      }
-      stage.value.size(size)
-    },
-    { immediate: true }
-  )
+  function handleResize() {
+    if (!containerRef.value) return
+    if (!stage.value) {
+      stage.value = new Stage({
+        container: containerRef.value
+      })
+      resizeFn()
+    }
+    stage.value.size(containerSize.value)
+  }
+
+  watch(containerSize, handleResize)
+
+  onMounted(() => {
+    handleResize()
+  })
 
   return { containerRef, containerSize }
 }

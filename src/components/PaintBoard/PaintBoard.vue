@@ -23,7 +23,6 @@ function initStage(s: Stage) {
 
   const rootGroup = new Group({ id: RootGroupId })
   layer.add(rootGroup)
-
   factory?.setRoot(rootGroup).active(DrawShapeType.Rect)
 }
 </script>
