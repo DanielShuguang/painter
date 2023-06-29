@@ -28,7 +28,6 @@ describe('PaintBoard component test', () => {
     factory.active(DrawShapeType.Text)
 
     drawTextShape(stage)
-    await nextTick()
     await wait(0)
 
     let textarea = wrapper.find<HTMLTextAreaElement>('.canvas-input')
@@ -48,7 +47,6 @@ describe('PaintBoard component test', () => {
     text?.destroy()
 
     drawTextShape(stage)
-    await nextTick()
     await wait(0)
 
     textarea = wrapper.find<HTMLTextAreaElement>('.canvas-input')
