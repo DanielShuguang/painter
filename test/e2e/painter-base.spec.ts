@@ -13,6 +13,12 @@ test('init painter', async ({ page }) => {
   const shapeIcons = await page.$$('.shape-icon')
 
   expect(shapeIcons.length).toBe(6)
+
+  for (const btn of shapeIcons.slice(1)) {
+    expect(await btn.getAttribute('class')).not.toContain('is-active')
+    await btn.click()
+    expect(await btn.getAttribute('class')).toContain('is-active')
+  }
 })
 
 test('color picker', async ({ page }) => {

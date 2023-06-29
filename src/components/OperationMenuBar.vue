@@ -23,7 +23,12 @@ export default defineComponent({
     }
 
     function handleChangeColor() {
-      factory?.currentShape?.options({ nodeConfig: { stroke: colorValue.value } })
+      const shape = factory?.currentShape
+      if (shape?.type === DrawShapeType.Brush || shape?.type === DrawShapeType.Text) {
+        shape.options({ nodeConfig: { fill: colorValue.value } })
+      } else {
+        shape?.options({ nodeConfig: { stroke: colorValue.value } })
+      }
     }
 
     factory?.onChangeShape(type => {
