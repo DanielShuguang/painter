@@ -18,6 +18,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    include: ['test/unit/**/*.{test,spec}.{ts,js,tsx}'],
     threads: false
   }
 })
