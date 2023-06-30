@@ -1,10 +1,11 @@
 import { InjectionKey, onMounted, onUnmounted } from 'vue'
+import { isDev } from './env'
 
 const eventMap = new Map<InjectionKey<unknown> | string, Function>()
 
 export const eventBus = {
   on<T extends any[]>(event: InjectionKey<T> | string, handler: (...args: T) => void) {
-    if (eventMap.has(event)) {
+    if (eventMap.has(event) && isDev) {
       console.warn(`事件 ${event.toString()} 已存在，原有事件将被覆盖`)
     }
     eventMap.set(event, handler)
