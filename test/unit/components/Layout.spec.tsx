@@ -99,4 +99,12 @@ describe('Layout component test', () => {
     await nextTick()
     expect(rootGroup.findOne('Rect')).toBeFalsy()
   })
+
+  it('destroy', () => {
+    const destroySpy = vi.spyOn(factory, 'destroy')
+    wrapper.unmount()
+
+    expect(destroySpy).toHaveBeenCalled()
+    expect(factory.getRoot()).toBeFalsy()
+  })
 })

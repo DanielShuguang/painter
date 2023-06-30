@@ -111,6 +111,8 @@ export class PaintFactory {
     this.currentShape?.deactivate()
     this.disposeEvents.forEach(fn => fn())
     this.root?.getStage()?.off()
+    this.root?.destroy()
+    this.root = undefined
 
     return this
   }
