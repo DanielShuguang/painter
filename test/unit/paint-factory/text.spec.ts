@@ -42,9 +42,6 @@ describe('Draw text shape', () => {
   })
 
   it('draw shape', () => {
-    const size = { height: 1000, width: 1000 }
-    const position = { x: 400, y: 400 }
-
     eventBus.once(ShowTextEditorEvent, text => {
       expect(text.name()).toBe(textName)
     })
@@ -57,18 +54,37 @@ describe('Draw text shape', () => {
     stageMouseMove(stage, { x: 1400, y: 1400 })
     stageMouseClick(stage, { x: 1400, y: 1400 })
 
-    const group = stage.findOne<Group>(`.${textGroupName}`)
+    let group = stage.findOne<Group>(`.${textGroupName}`)
+    let size = { height: 1000, width: 1000 }
+    let position = { x: 400, y: 400 }
     expect(group.position()).toEqual(position)
-    const rect = group.findOne(`.${textRectName}`)
+    let rect = group.findOne(`.${textRectName}`)
     expect(rect).instanceOf(Rect)
     expect(rect.size()).toEqual(size)
-    const text = group.findOne<Text>(`.${textName}`)
+    let text = group.findOne<Text>(`.${textName}`)
     expect(text).instanceOf(Text)
     expect(text.size()).toEqual(size)
 
     const content = 'hello world'
     eventBus.emit(SaveTextEvent, text.id(), content)
     expect(text.text()).toBe(content)
+
+    group.destroy()
+
+    stageMouseClick(stage, { x: 1400, y: 1400 })
+    stageMouseMove(stage, { x: 400, y: 400 })
+    stageMouseClick(stage, { x: 400, y: 400 })
+
+    group = stage.findOne<Group>(`.${textGroupName}`)
+    position = { x: 1400, y: 1400 }
+    size = { height: -1000, width: -1000 }
+    expect(group.position()).toEqual(position)
+    rect = group.findOne(`.${textRectName}`)
+    expect(rect).instanceOf(Rect)
+    expect(rect.size()).toEqual(size)
+    text = group.findOne<Text>(`.${textName}`)
+    expect(text).instanceOf(Text)
+    expect(text.size()).toEqual(size)
 
     group.destroy()
   })

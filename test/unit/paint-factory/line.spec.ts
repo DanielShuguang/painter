@@ -67,6 +67,19 @@ describe('Draw line shape', () => {
     line2.destroy()
   })
 
+  it('cancel drawing', () => {
+    stageMouseClick(stage, { x: 400, y: 400 })
+
+    let line = stage.findOne<Line>('Line')
+    expect(line).toBeDefined()
+    expect(line.points()).toEqual(Array(4).fill(400))
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+
+    line = stage.findOne<Line>('Line')
+    expect(line).toBeUndefined()
+  })
+
   it('deactivate shape', () => {
     shape.deactivate()
 

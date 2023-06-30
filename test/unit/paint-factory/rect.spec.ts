@@ -38,25 +38,38 @@ describe('Draw rect shape', () => {
   })
 
   it('draw shape', () => {
-    const size = { height: 1000, width: 1000 }
-    const position = { x: 400, y: 400 }
+    let size = { height: 1000, width: 1000 }
+    let position = { x: 400, y: 400 }
 
     shape.drawListener(node => {
       expect(node).instanceOf(Rect)
-      const rect = node as Rect
-      expect(rect.size()).toEqual(size)
-      expect(rect.position()).toEqual(position)
     })
 
     stageMouseClick(stage, { x: 400, y: 400 })
 
-    const rect = stage.findOne<Rect>('Rect')
+    let rect = stage.findOne<Rect>('Rect')
     expect(rect.position()).toEqual(position)
 
     stageMouseMove(stage, { x: 1400, y: 1400 })
     stageMouseClick(stage, { x: 1400, y: 1400 })
 
     expect(rect.position()).toEqual(position)
+    expect(rect.size()).toEqual(size)
+
+    rect.destroy()
+
+    size = { height: -1000, width: -1000 }
+    position = { x: 1400, y: 1400 }
+    stageMouseClick(stage, { x: 1400, y: 1400 })
+
+    rect = stage.findOne<Rect>('Rect')
+    expect(rect.position()).toEqual(position)
+
+    stageMouseMove(stage, { x: 400, y: 400 })
+    stageMouseClick(stage, { x: 400, y: 400 })
+
+    expect(rect.position()).toEqual(position)
+    expect(rect.size()).toEqual(size)
 
     rect.destroy()
   })

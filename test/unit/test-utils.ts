@@ -3,6 +3,8 @@ import { Group } from 'konva/lib/Group'
 import { Layer } from 'konva/lib/Layer'
 import { Stage } from 'konva/lib/Stage'
 import { Vector2d } from 'konva/lib/types'
+import { KonvaEventObject } from 'konva/lib/Node'
+import { Shape } from 'konva/lib/Shape'
 
 export function addStage(size = { height: 2000, width: 2000 }) {
   const root = document.createElement('div')
@@ -67,6 +69,17 @@ export function stageWheel(stage: Stage, times: number, direction: 'up' | 'down'
       new WheelEvent('wheel', direction === 'up' ? { deltaY: -1 } : { deltaY: 1 })
     )
   }
+}
+
+export function nodeContextmenu(stage: Stage, target: Stage | Shape, pos = { x: 50, y: 50 }) {
+  stage.fire('contextmenu', {
+    target,
+    evt: new MouseEvent('contextmenu', { clientX: pos.x, clientY: pos.y }),
+    cancelBubble: false,
+    currentTarget: stage,
+    pointerId: Math.random() * 1000,
+    type: 'contextmenu'
+  } as KonvaEventObject<MouseEvent>)
 }
 
 export function withSetup<Return>(composable: () => Return) {

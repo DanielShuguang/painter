@@ -3,10 +3,11 @@ import PaintBoard from '@/components/PaintBoard/PaintBoard.vue'
 import { DrawShapeType, PaintFactory } from '@/paint-factory'
 import { mount } from '@vue/test-utils'
 import { Group } from 'konva/lib/Group'
-import { stageMouseClick, stageMouseMove, wait } from '../test-utils'
+import { nodeContextmenu, stageMouseClick, stageMouseMove, wait } from '../test-utils'
 import { nextTick } from 'vue'
 import { Stage } from 'konva/lib/Stage'
 import { Text } from 'konva/lib/shapes/Text'
+import { MenuOption, NMenu } from 'naive-ui'
 
 const factory = new PaintFactory()
 
@@ -59,6 +60,42 @@ describe('PaintBoard component test', () => {
     expect(textarea.exists()).toBeFalsy()
     text = factory.getRoot()?.findOne<Text>('Text')
     expect(text?.text()).toBe(content)
+    text?.destroy()
+  })
+
+  it('trigger contextmenu', async () => {
+    stage.dispatchEvent(new MouseEvent('contextmenu', { clientX: 100, clientY: 100 }))
+    await nextTick()
+
+    expect(document.querySelector('.contextmenu-modal')).toBeTruthy()
+    expect(document.querySelectorAll('.n-menu-item').length).toBe(1)
+
+    dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    await nextTick()
+    expect(document.querySelector('.contextmenu-modal')).toBeFalsy()
+
+    drawTextShape(stage)
+    await nextTick()
+    const text = stage.findOne<Text>('Text')
+    nodeContextmenu(stage, text)
+    await nextTick()
+    expect(document.querySelector('.contextmenu-modal')).toBeTruthy()
+    expect(document.querySelectorAll('.n-menu-item').length).toBe(2)
+
+    const menuEl = wrapper.findComponent(NMenu)
+    const options = menuEl.getCurrentComponent().props.options as MenuOption[]
+    const deleteOpt = options.find(el => el.key?.toString().includes('delete'))
+    expect(deleteOpt).toBeTruthy()
+
+    let hasRun = false
+    const handle = () => (hasRun = true)
+    stage.on(deleteOpt?.key?.toString() || '', handle)
+
+    menuEl.getCurrentComponent().emit('update-value', deleteOpt?.key, deleteOpt)
+    await nextTick()
+    expect(hasRun).toBeTruthy()
+    expect(document.querySelector('.contextmenu-modal')).toBeFalsy()
+    stage.off(deleteOpt?.key?.toString() || '', handle)
   })
 })
 
