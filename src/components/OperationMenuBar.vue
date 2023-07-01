@@ -1,5 +1,5 @@
 <script lang="tsx">
-import { DrawShapeType, PaintFactory } from '@/paint-factory'
+import { ChangeColorEvent, DrawShapeType, PaintFactory } from '@/paint-factory'
 import { NColorPicker } from 'naive-ui'
 import { IconConfigProvider, Icon } from '@vicons/utils'
 import { FactoryKey } from './Layout/composition'
@@ -14,15 +14,12 @@ export default defineComponent({
     const factory = inject(FactoryKey)
 
     function handleChangeShape(type: DrawShapeType) {
-      const shape = factory?.active(type).currentShape
-      if (type === DrawShapeType.Text) {
-        shape?.options({ nodeConfig: { fill: colorValue.value } })
-      } else {
-        shape?.options({ nodeConfig: { stroke: colorValue.value } })
-      }
+      factory?.active(type).emit(ChangeColorEvent, { color: colorValue.value })
     }
 
     function handleChangeColor() {
+      factory?.emit(ChangeColorEvent, { color: colorValue.value })
+
       const shape = factory?.currentShape
       if (shape?.type === DrawShapeType.Brush || shape?.type === DrawShapeType.Text) {
         shape.options({ nodeConfig: { fill: colorValue.value } })
@@ -35,16 +32,32 @@ export default defineComponent({
       activeShape.value = type
     })
 
+    function currentToolbar() {
+      if (activeShape.value) {
+        const shape = PaintFactory.shapeMap.get(activeShape.value)
+        if (shape?.toolbar) {
+          return (
+            <>
+              <div class="title">配置</div>
+              <div class="shape-toolbar">{h(shape.toolbar)}</div>
+            </>
+          )
+        }
+      }
+
+      return null
+    }
+
     return () => (
       <div class="operation-menu-bar">
-        <div class="title">颜色</div>
-        <NColorPicker
-          v-model:value={colorValue.value}
-          showAlpha={false}
-          actions={['confirm']}
-          onComplete={handleChangeColor}
-        />
         <IconConfigProvider size="22" color="skyblue">
+          <div class="title">颜色</div>
+          <NColorPicker
+            v-model:value={colorValue.value}
+            showAlpha={false}
+            actions={['confirm']}
+            onComplete={handleChangeColor}
+          />
           <div class="title">形状</div>
           <div class="draw-shape-selection">
             {Array.from(PaintFactory.shapeMap.entries()).map(([k, v]) => (
@@ -58,7 +71,7 @@ export default defineComponent({
               </span>
             ))}
           </div>
-          <div class="title"></div>
+          {currentToolbar()}
         </IconConfigProvider>
       </div>
     )
@@ -83,6 +96,8 @@ export default defineComponent({
 .title {
   width: 100%;
   padding: 5px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .shape-icon {

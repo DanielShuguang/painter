@@ -1,5 +1,5 @@
 import { Rect } from 'konva/lib/shapes/Rect'
-import { DrawBase, DrawOptions, DrawShapeType } from '../base'
+import { ChangeColorEvent, DrawBase, DrawOptions, DrawShapeType } from '../base'
 import { Text, TextConfig } from 'konva/lib/shapes/Text'
 import { nanoid } from 'nanoid'
 import { KonvaEventObject } from 'konva/lib/Node'
@@ -24,11 +24,18 @@ export class DrawText extends DrawBase {
   readonly type = DrawShapeType.Text
 
   protected _options: DrawOptions<TextConfig> = {
+    colorKey: 'fill',
     nodeConfig: {
       fill: '#000',
       fontFamily: 'monospace',
       padding: 4
     }
+  }
+
+  protected changeColor() {
+    this.rootGroup?.getStage()?.on(ChangeColorEvent, (e: any) => {
+      this._options.nodeConfig.fill = e.color
+    })
   }
 
   protected mount() {

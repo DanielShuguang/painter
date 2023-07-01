@@ -113,7 +113,13 @@ export function useSplitDrag() {
   const defaultValue = 200
 
   const dragRef = ref<HTMLDivElement>()
-  const { style, x } = useDraggable(dragRef, { axis: 'x', initialValue: { x: defaultValue, y: 0 } })
+  const { style, x } = useDraggable(dragRef, {
+    axis: 'x',
+    initialValue: { x: defaultValue, y: 0 },
+    onMove: pos => {
+      pos.x = Math.max(200, pos.x)
+    }
+  })
 
   function handleReset() {
     x.value = defaultValue

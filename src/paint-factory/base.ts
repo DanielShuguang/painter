@@ -13,8 +13,11 @@ import { CleanCacheEvent, ShowDialogEvent, UpdateCacheEvent } from '@/components
 export interface DrawOptions<Config extends NodeConfig = NodeConfig> {
   brushWidth?: number
   brushType?: 'round' | 'square'
+  colorKey?: string | string[]
   nodeConfig: Config
 }
+
+export const ChangeColorEvent = 'custom-change-color'
 
 export enum DrawShapeType {
   Rect = 'rect',
@@ -28,6 +31,7 @@ export enum DrawShapeType {
 
 export abstract class DrawBase {
   protected _options: DrawOptions = {
+    colorKey: 'stroke',
     nodeConfig: { stroke: '#000' }
   }
   protected rootGroup?: Group
@@ -77,6 +81,21 @@ export abstract class DrawBase {
     return this
   }
 
+  protected changeColor() {
+    this.rootGroup?.getStage()?.on(ChangeColorEvent, (e: any) => {
+      const key = this.options().colorKey
+      if (!key) {
+        this._options.nodeConfig.stroke = e.color
+      } else if (typeof key === 'string') {
+        this._options.nodeConfig[key] = e.color
+      } else {
+        key.forEach(k => {
+          this._options.nodeConfig[k] = e.color
+        })
+      }
+    })
+  }
+
   options(options: DrawOptions): this
   options(): DrawOptions
   options(options?: DrawOptions) {
@@ -90,7 +109,9 @@ export abstract class DrawBase {
 
   activate() {
     this._isActive = true
+    this.changeColor()
     this.mount()
+    this.disposeEvents.push(() => this.rootGroup?.getStage()?.off(ChangeColorEvent))
 
     return this
   }

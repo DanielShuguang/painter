@@ -50,7 +50,7 @@ export class DrawEllipse extends DrawBase {
       const height = rectSize.height / 2
       const width = rectSize.width / 2
       const ry = Math.pow(Math.pow(height, 2) + Math.pow(width, 2), 0.5)
-      const rotateDeg = (Math.atan(rectSize.height / rectSize.width) / Math.PI) * 180
+      const rotateDeg = (Math.atan(rectSize.height / rectSize.width) / Math.PI) * 180 || 0
 
       ellipse
         .position({ x: startPos.x + width, y: startPos.y + height })

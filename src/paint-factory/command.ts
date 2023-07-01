@@ -1,5 +1,4 @@
 import { Group } from 'konva/lib/Group'
-import { Node } from 'konva/lib/Node'
 
 export class CommandService {
   private static instance?: CommandService
@@ -25,7 +24,7 @@ export class CommandService {
     return this
   }
 
-  registerCommand(key: string, handler: (node: Node) => void) {
+  registerCommand(key: string, handler: (node: any) => void) {
     if (this.commands.has(key)) return this
 
     const stage = this.rootGroup?.getStage()

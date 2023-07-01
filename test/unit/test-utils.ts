@@ -5,6 +5,7 @@ import { Stage } from 'konva/lib/Stage'
 import { Vector2d } from 'konva/lib/types'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { Shape } from 'konva/lib/Shape'
+import { VueWrapper } from '@vue/test-utils'
 
 export function addStage(size = { height: 2000, width: 2000 }) {
   const root = document.createElement('div')
@@ -95,4 +96,14 @@ export function withSetup<Return>(composable: () => Return) {
   // 返回结果与应用实例
   // 用来测试供给和组件卸载
   return [result!, app] as const
+}
+
+/**
+ * 通过 NColorPicker 组件触发颜色修改
+ * @param picker
+ * @param color
+ */
+export function triggerColorPicker(picker: VueWrapper, color: string) {
+  picker.getCurrentComponent().emit('update:value', color)
+  picker.getCurrentComponent().emit('complete', color)
 }

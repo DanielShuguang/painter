@@ -32,20 +32,21 @@ describe('Layout component test', () => {
     expect(operationBar.attributes('style')).toContain('width: 200px')
 
     await splitEl.trigger('pointerdown', { clientX: 0 } as PointerEventInit)
+    dispatchEvent(new MouseEvent('pointermove', { clientX: 100 }))
+    dispatchEvent(new MouseEvent('pointerup'))
+
+    // 最小宽度为 200
+    await nextTick()
+    expect(splitEl.element.style.left).toBe('200px')
+    expect(operationBar.attributes('style')).toContain('width: 200px')
+
+    await splitEl.trigger('pointerdown', { clientX: 0 } as PointerEventInit)
     dispatchEvent(new MouseEvent('pointermove', { clientX: 300 }))
     dispatchEvent(new MouseEvent('pointerup'))
 
     await nextTick()
     expect(splitEl.element.style.left).toBe('300px')
     expect(operationBar.attributes('style')).toContain('width: 300px')
-
-    await splitEl.trigger('pointerdown', { clientX: 0 } as PointerEventInit)
-    dispatchEvent(new MouseEvent('pointermove', { clientX: 100 }))
-    dispatchEvent(new MouseEvent('pointerup'))
-
-    await nextTick()
-    expect(splitEl.element.style.left).toBe('100px')
-    expect(operationBar.attributes('style')).toContain('width: 100px')
 
     await splitEl.trigger('dblclick')
     expect(splitEl.element.style.left).toBe('200px')

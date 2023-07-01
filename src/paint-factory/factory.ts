@@ -11,13 +11,20 @@ import {
 import { Component } from 'vue'
 import { Shape } from 'konva/lib/Shape'
 import { DrawRect, DrawCircle, DrawLine, DrawEllipse, DrawText, DrawBrush } from './shapes'
-import { Node } from 'konva/lib/Node'
+import { BrushTools } from './toolbars'
+
+export interface ShapeItem {
+  shape: DrawBase
+  icon: Component
+  tip?: string
+  toolbar?: Component
+}
 
 export class PaintFactory {
-  static shapeMap = new Map<DrawShapeType, { shape: DrawBase; icon: Component; tip?: string }>()
+  static shapeMap = new Map<DrawShapeType, ShapeItem>()
 
-  static registerShape(drawShape: DrawBase, icon: Component, tip?: string) {
-    this.shapeMap.set(drawShape.type, { shape: drawShape, icon, tip })
+  static registerShape(shape: DrawBase, info: Omit<ShapeItem, 'shape'>) {
+    this.shapeMap.set(shape.type, { shape, ...info })
   }
 
   private static instance?: PaintFactory
@@ -103,8 +110,8 @@ export class PaintFactory {
     return this
   }
 
-  emit(event: string, node: Node) {
-    this.root?.getStage()?.fire(event, node)
+  emit(event: string, arg: any) {
+    this.root?.getStage()?.fire(event, arg)
   }
 
   destroy() {
@@ -118,9 +125,13 @@ export class PaintFactory {
   }
 }
 
-PaintFactory.registerShape(new DrawRect(), RectangleLandscape12Regular, '矩形')
-PaintFactory.registerShape(new DrawCircle(), Circle12Regular, '圆形')
-PaintFactory.registerShape(new DrawLine(), Line24Filled, '直线')
-PaintFactory.registerShape(new DrawEllipse(), Oval16Regular, '椭圆')
-PaintFactory.registerShape(new DrawText(), DrawText20Regular, '文字')
-PaintFactory.registerShape(new DrawBrush(), PaintBrush16Regular, '笔刷')
+PaintFactory.registerShape(new DrawRect(), { icon: RectangleLandscape12Regular, tip: '矩形' })
+PaintFactory.registerShape(new DrawCircle(), { icon: Circle12Regular, tip: '圆形' })
+PaintFactory.registerShape(new DrawLine(), { icon: Line24Filled, tip: '直线' })
+PaintFactory.registerShape(new DrawEllipse(), { icon: Oval16Regular, tip: '椭圆' })
+PaintFactory.registerShape(new DrawText(), { icon: DrawText20Regular, tip: '文字' })
+PaintFactory.registerShape(new DrawBrush(), {
+  icon: PaintBrush16Regular,
+  tip: '笔刷',
+  toolbar: BrushTools
+})
