@@ -42,7 +42,9 @@ export class ContextmenuService {
   }
 
   registerMenu(menu: ContextmenuOption) {
-    this.menuMap.set(menu.key?.toString() ?? nanoid(), menu)
+    if (!menu.key?.toString() || !this.menuMap.has(menu.key.toString())) {
+      this.menuMap.set(menu.key?.toString() ?? nanoid(), menu)
+    }
 
     return this
   }

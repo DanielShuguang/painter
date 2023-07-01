@@ -26,6 +26,8 @@ export class CommandService {
   }
 
   registerCommand(key: string, handler: (node: Node) => void) {
+    if (this.commands.has(key)) return this
+
     const stage = this.rootGroup?.getStage()
 
     const mission = () => {
