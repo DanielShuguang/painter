@@ -10,7 +10,7 @@ export class DrawBrush extends DrawBase {
   protected _options: DrawOptions<LineConfig> = {
     brushWidth: 4,
     brushType: 'round',
-    nodeConfig: { fill: '#000' }
+    nodeConfig: { stroke: '#000' }
   }
 
   protected mount() {

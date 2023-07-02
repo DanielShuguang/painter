@@ -49,11 +49,11 @@ describe('BrushTools test', () => {
     let color = '#ccc'
     triggerColorPicker(colorPicker, color)
     await nextTick()
-    expect(shape.options().nodeConfig.fill).toContain(color)
+    expect(shape.options().nodeConfig.stroke).toContain(color)
 
     color = '#fff'
     triggerColorPicker(colorPicker, color)
     await nextTick()
-    expect(shape.options().nodeConfig.fill).toContain(color)
+    expect(shape.options().nodeConfig.stroke).toContain(color)
   })
 })

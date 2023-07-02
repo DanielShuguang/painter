@@ -11,7 +11,7 @@ import {
 import { Component } from 'vue'
 import { Shape } from 'konva/lib/Shape'
 import { DrawRect, DrawCircle, DrawLine, DrawEllipse, DrawText, DrawBrush } from './shapes'
-import { BrushTools } from './toolbars'
+import { BrushTools, TextTools } from './toolbars'
 
 export interface ShapeItem {
   shape: DrawBase
@@ -129,7 +129,11 @@ PaintFactory.registerShape(new DrawRect(), { icon: RectangleLandscape12Regular, 
 PaintFactory.registerShape(new DrawCircle(), { icon: Circle12Regular, tip: '圆形' })
 PaintFactory.registerShape(new DrawLine(), { icon: Line24Filled, tip: '直线' })
 PaintFactory.registerShape(new DrawEllipse(), { icon: Oval16Regular, tip: '椭圆' })
-PaintFactory.registerShape(new DrawText(), { icon: DrawText20Regular, tip: '文字' })
+PaintFactory.registerShape(new DrawText(), {
+  icon: DrawText20Regular,
+  tip: '文字',
+  toolbar: TextTools
+})
 PaintFactory.registerShape(new DrawBrush(), {
   icon: PaintBrush16Regular,
   tip: '笔刷',

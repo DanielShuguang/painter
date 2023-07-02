@@ -26,7 +26,10 @@ describe('Draw circle shape', () => {
   })
 
   it('shape options', () => {
-    expect(shape.options()).toEqual(<DrawOptions>{ nodeConfig: { stroke: '#000' } })
+    expect(shape.options()).toEqual(<DrawOptions>{
+      colorKey: 'stroke',
+      nodeConfig: { stroke: '#000' }
+    })
 
     shape.options(<DrawOptions<CircleConfig>>{ nodeConfig: { fill: 'red' } })
 

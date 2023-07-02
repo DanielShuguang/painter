@@ -28,7 +28,9 @@ export class DrawText extends DrawBase {
     nodeConfig: {
       fill: '#000',
       fontFamily: 'monospace',
-      padding: 4
+      fontStyle: 'normal',
+      padding: 4,
+      fontSize: 12
     }
   }
 
