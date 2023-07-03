@@ -1,6 +1,7 @@
 import { Group } from 'konva/lib/Group'
 import { DrawBase, DrawShapeType } from './base'
 import {
+  ArrowMove20Filled,
   Circle12Regular,
   DrawText20Regular,
   Line24Filled,
@@ -12,6 +13,7 @@ import { Component } from 'vue'
 import { Shape } from 'konva/lib/Shape'
 import { DrawRect, DrawCircle, DrawLine, DrawEllipse, DrawText, DrawBrush } from './shapes'
 import { BaseTools, BrushTools, TextTools } from './toolbars'
+import { MoveShape } from './tool-shapes'
 
 export interface ShapeItem {
   shape: DrawBase
@@ -22,9 +24,14 @@ export interface ShapeItem {
 
 export class PaintFactory {
   static shapeMap = new Map<DrawShapeType, ShapeItem>()
+  static toolMap = new Map<DrawShapeType, ShapeItem>()
 
   static registerShape(shape: DrawBase, info: Omit<ShapeItem, 'shape'>) {
     this.shapeMap.set(shape.type, { shape, ...info })
+  }
+
+  static registerTool(shape: DrawBase, info: Omit<ShapeItem, 'shape' | 'toolbar'>) {
+    this.toolMap.set(shape.type, { shape, ...info })
   }
 
   private static instance?: PaintFactory
@@ -42,7 +49,7 @@ export class PaintFactory {
 
   setRoot(root: Group) {
     this.root = root
-    PaintFactory.shapeMap.forEach(ins => ins.shape.setGroup(root))
+    this.getAllShapes().forEach(ins => ins.shape.setGroup(root))
     this.zoomHandler(root)
 
     return this
@@ -50,6 +57,10 @@ export class PaintFactory {
 
   getRoot() {
     return this.root
+  }
+
+  getAllShapes() {
+    return [...PaintFactory.shapeMap.values(), ...PaintFactory.toolMap.values()]
   }
 
   private zoomHandler(root: Group) {
@@ -73,7 +84,7 @@ export class PaintFactory {
   }
 
   drawListener(handler: (node: Shape | Group) => void) {
-    PaintFactory.shapeMap.forEach(ins => {
+    this.getAllShapes().forEach(ins => {
       this.disposeEvents.push(ins.shape.drawListener(handler))
     })
   }
@@ -85,7 +96,11 @@ export class PaintFactory {
   }
 
   get currentShape() {
-    return this.activeType ? PaintFactory.shapeMap.get(this.activeType)?.shape : undefined
+    if (this.activeType) {
+      const target =
+        PaintFactory.shapeMap.get(this.activeType) || PaintFactory.toolMap.get(this.activeType)
+      return target?.shape
+    }
   }
 
   onChangeShape(callback: (type: DrawShapeType | null) => void) {
@@ -126,6 +141,8 @@ export class PaintFactory {
     return this
   }
 }
+
+PaintFactory.registerTool(new MoveShape(), { icon: ArrowMove20Filled })
 
 PaintFactory.registerShape(new DrawRect(), {
   icon: RectangleLandscape12Regular,

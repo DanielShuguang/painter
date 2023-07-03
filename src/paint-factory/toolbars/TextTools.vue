@@ -24,5 +24,3 @@ const { options } = useShapeOptions<TextConfig>({
     </NFormItem>
   </NForm>
 </template>
-
-<style scoped></style>
