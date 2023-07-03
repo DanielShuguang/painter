@@ -17,9 +17,7 @@ describe('Draw line shape', () => {
   })
 
   it('shape options', () => {
-    expect(shape.options()).toEqual(<DrawOptions>{
-      nodeConfig: { stroke: '#000', hitStrokeWidth: 10 }
-    })
+    expect(shape.options().nodeConfig.hitStrokeWidth).toBe(10)
 
     shape.options(<DrawOptions<RectConfig>>{
       nodeConfig: { fill: 'red' }

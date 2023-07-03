@@ -23,7 +23,7 @@ export class DrawCircle extends DrawBase {
         return
       }
 
-      startPos = getStagePosition(e.evt)
+      startPos = getStagePosition(e.evt, stage)
       startPoint = new Circle({
         ...startPos,
         fill: '#000',
@@ -39,7 +39,7 @@ export class DrawCircle extends DrawBase {
     stage?.on('mousemove.drawCircle', (e: KonvaEventObject<MouseEvent>) => {
       if (!circle || !startPoint) return
 
-      const endPos = getStagePosition(e.evt)
+      const endPos = getStagePosition(e.evt, stage)
       const rectSize = {
         height: endPos.y - startPos.y,
         width: endPos.x - startPos.x

@@ -11,7 +11,7 @@ import {
 import { Component } from 'vue'
 import { Shape } from 'konva/lib/Shape'
 import { DrawRect, DrawCircle, DrawLine, DrawEllipse, DrawText, DrawBrush } from './shapes'
-import { BrushTools, TextTools } from './toolbars'
+import { BaseTools, BrushTools, TextTools } from './toolbars'
 
 export interface ShapeItem {
   shape: DrawBase
@@ -58,8 +58,8 @@ export class PaintFactory {
       const originScale = root.scale() || { x: 1, y: 1 }
       const offset = e.evt.deltaY < 0 ? -0.05 : 0.05
       root.scale({
-        x: Math.max(originScale.x - offset, 0.2),
-        y: Math.max(originScale.y - offset, 0.2)
+        x: +Math.max(originScale.x - offset, 0.2).toFixed(2),
+        y: +Math.max(originScale.y - offset, 0.2).toFixed(2)
       })
     })
 
@@ -102,15 +102,17 @@ export class PaintFactory {
   }
 
   active(type: DrawShapeType) {
-    this.currentShape?.deactivate()
-    this.activeType = type
-    this.currentShape?.activate()
-    this.changeShapeEvents.forEach(fn => fn(this.activeType))
+    if (type !== this.activeType) {
+      this.currentShape?.deactivate()
+      this.activeType = type
+      this.currentShape?.activate()
+      this.changeShapeEvents.forEach(fn => fn(this.activeType))
+    }
 
     return this
   }
 
-  emit(event: string, arg: any) {
+  emit(event: string, arg: object) {
     this.root?.getStage()?.fire(event, arg)
   }
 
@@ -125,10 +127,22 @@ export class PaintFactory {
   }
 }
 
-PaintFactory.registerShape(new DrawRect(), { icon: RectangleLandscape12Regular, tip: '矩形' })
-PaintFactory.registerShape(new DrawCircle(), { icon: Circle12Regular, tip: '圆形' })
-PaintFactory.registerShape(new DrawLine(), { icon: Line24Filled, tip: '直线' })
-PaintFactory.registerShape(new DrawEllipse(), { icon: Oval16Regular, tip: '椭圆' })
+PaintFactory.registerShape(new DrawRect(), {
+  icon: RectangleLandscape12Regular,
+  tip: '矩形',
+  toolbar: BaseTools
+})
+PaintFactory.registerShape(new DrawCircle(), {
+  icon: Circle12Regular,
+  tip: '圆形',
+  toolbar: BaseTools
+})
+PaintFactory.registerShape(new DrawLine(), { icon: Line24Filled, tip: '直线', toolbar: BaseTools })
+PaintFactory.registerShape(new DrawEllipse(), {
+  icon: Oval16Regular,
+  tip: '椭圆',
+  toolbar: BaseTools
+})
 PaintFactory.registerShape(new DrawText(), {
   icon: DrawText20Regular,
   tip: '文字',

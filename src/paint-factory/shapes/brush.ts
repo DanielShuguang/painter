@@ -10,6 +10,7 @@ export class DrawBrush extends DrawBase {
   protected _options: DrawOptions<LineConfig> = {
     brushWidth: 4,
     brushType: 'round',
+    colorKey: 'stroke',
     nodeConfig: { stroke: '#000' }
   }
 
@@ -23,7 +24,7 @@ export class DrawBrush extends DrawBase {
     stage?.on('mousedown.drawBrush', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0) return
 
-      const position = getStagePosition(e.evt)
+      const position = getStagePosition(e.evt, stage)
       lastPosition = position
       isDrawing = true
       line = new Line({
@@ -42,7 +43,7 @@ export class DrawBrush extends DrawBase {
     stage?.on('mousemove.drawBrush', (e: KonvaEventObject<MouseEvent>) => {
       if (!isDrawing || !line) return
 
-      const position = getStagePosition(e.evt)
+      const position = getStagePosition(e.evt, stage)
       if (isEqual(position, lastPosition)) return
 
       lastPosition = position

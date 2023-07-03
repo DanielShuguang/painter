@@ -7,6 +7,7 @@ import { LineConfig } from 'konva/lib/shapes/Line'
 export class DrawLine extends DrawBase {
   readonly type = DrawShapeType.Line
   protected _options: DrawOptions<LineConfig> = {
+    colorKey: 'stroke',
     nodeConfig: { stroke: '#000', hitStrokeWidth: 10 }
   }
 
@@ -19,7 +20,7 @@ export class DrawLine extends DrawBase {
       if (e.evt.button !== 0) return
 
       if (!line) {
-        startPos = getStagePosition(e.evt)
+        startPos = getStagePosition(e.evt, stage)
         line = new Line({
           lineCap: 'round',
           lineJoin: 'round',
@@ -37,7 +38,7 @@ export class DrawLine extends DrawBase {
     stage?.on('mousemove.drawLine', (e: KonvaEventObject<MouseEvent>) => {
       if (!line) return
 
-      const endPos = getStagePosition(e.evt)
+      const endPos = getStagePosition(e.evt, stage)
       const oldPoints = line.points()
       const len = oldPoints.length
       oldPoints[len - 2] = endPos.x

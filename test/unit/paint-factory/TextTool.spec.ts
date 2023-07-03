@@ -14,7 +14,11 @@ describe('TextTools test', () => {
       provide: { [FactoryKey as symbol]: factory }
     }
   })
-  factory.setRoot(rootGroup).active(DrawShapeType.Text)
+  factory.setRoot(rootGroup)
+
+  beforeEach(() => {
+    factory.active(DrawShapeType.Text)
+  })
 
   it('active toolbar', async () => {
     factory.active(DrawShapeType.Circle)

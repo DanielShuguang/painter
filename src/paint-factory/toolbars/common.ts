@@ -1,13 +1,15 @@
-import { inject, onMounted, reactive, watch } from 'vue'
+import { inject, onMounted, onUnmounted, reactive, watch } from 'vue'
 import { DrawOptions } from '../base'
-import { NodeConfig } from 'konva/lib/Node'
 import { FactoryKey } from '@/components/Layout/composition'
+import { cloneDeep, merge } from 'lodash-es'
+import { ShapeConfig } from 'konva/lib/Shape'
 
-export function useShapeOptions<Config extends NodeConfig = NodeConfig>(
+export function useShapeOptions<Config extends ShapeConfig = ShapeConfig>(
   defaultOpt: DrawOptions<Config>
 ) {
   const factory = inject(FactoryKey)!
-  const options = reactive(defaultOpt)
+  const options = reactive(cloneDeep(defaultOpt))
+  let cancenFn: (() => void) | undefined
 
   function getShape() {
     return factory.currentShape!
@@ -17,7 +19,7 @@ export function useShapeOptions<Config extends NodeConfig = NodeConfig>(
     () => options,
     () => {
       const shape = getShape()
-      shape.options(options)
+      shape.options(cloneDeep(options))
     },
     { deep: true }
   )
@@ -25,9 +27,16 @@ export function useShapeOptions<Config extends NodeConfig = NodeConfig>(
   onMounted(() => {
     const opt = factory.currentShape?.options() as DrawOptions<Config> | undefined
     if (opt) {
-      Object.assign(options, opt)
+      merge(options, opt)
     }
+
+    cancenFn = factory.onChangeShape(() => {
+      const opt = factory.currentShape?.options()
+      merge(options, defaultOpt, opt || {})
+    })
   })
+
+  onUnmounted(() => cancenFn?.())
 
   return { options }
 }

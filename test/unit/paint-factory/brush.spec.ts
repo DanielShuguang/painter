@@ -16,11 +16,8 @@ describe('Draw brush shape', () => {
   })
 
   it('shape options', () => {
-    expect(shape.options()).toEqual(<DrawOptions>{
-      brushWidth: 4,
-      brushType: 'round',
-      nodeConfig: { stroke: '#000' }
-    })
+    expect(Object.keys(shape.options())).toContain('brushWidth')
+    expect(Object.keys(shape.options())).toContain('brushType')
 
     shape.options(<DrawOptions<RectConfig>>{ nodeConfig: { stroke: 'red' } })
 

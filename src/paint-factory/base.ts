@@ -1,16 +1,16 @@
 import { Group } from 'konva/lib/Group'
-import { Shape } from 'konva/lib/Shape'
+import { Shape, ShapeConfig } from 'konva/lib/Shape'
 import { cloneDeep, merge } from 'lodash-es'
 import { CommandService } from './command'
 import { ContextmenuOption, ContextmenuService } from './contextmenu'
 import { Stage } from 'konva/lib/Stage'
 import { Layer } from 'konva/lib/Layer'
 import { RootGroupId } from '@/components/PaintBoard/composition'
-import { Node, NodeConfig } from 'konva/lib/Node'
+import { Node } from 'konva/lib/Node'
 import { eventBus } from '@/utils/eventBus'
 import { CleanCacheEvent, ShowDialogEvent, UpdateCacheEvent } from '@/components/Layout/composition'
 
-export interface DrawOptions<Config extends NodeConfig = NodeConfig> {
+export interface DrawOptions<Config extends ShapeConfig = ShapeConfig> {
   brushWidth?: number
   brushType?: 'round' | 'square'
   colorKey?: string | string[]
@@ -25,14 +25,16 @@ export enum DrawShapeType {
   Circle = 'circle',
   Text = 'text',
   Ellipse = 'ellipse',
-  Curve = 'curve',
-  Brush = 'brush'
+  Brush = 'brush',
+
+  Move = 'move',
+  Select = 'select'
 }
 
 export abstract class DrawBase {
   protected _options: DrawOptions = {
     colorKey: 'stroke',
-    nodeConfig: { stroke: '#000' }
+    nodeConfig: { stroke: '#000', strokeWidth: 2 }
   }
   protected rootGroup?: Group
   protected _isActive = false

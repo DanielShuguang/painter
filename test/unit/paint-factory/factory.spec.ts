@@ -65,18 +65,18 @@ describe('Shape factory test', () => {
   it('factory scale event', async () => {
     stageWheel(stage, 5, 'up')
     let scale = rootGroup.scale()!
-    expect(+scale?.x.toFixed(2)).toBe(1 + 5 * 0.05)
-    expect(+scale?.y.toFixed(2)).toBe(1 + 5 * 0.05)
+    expect(scale?.x).toBe(1 + 5 * 0.05)
+    expect(scale?.y).toBe(1 + 5 * 0.05)
 
     document.dispatchEvent(new KeyboardEvent('keyup', { key: '0', ctrlKey: true }))
     scale = rootGroup.scale()!
-    expect(+scale?.x.toFixed(2)).toBe(1)
-    expect(+scale?.y.toFixed(2)).toBe(1)
+    expect(scale?.x).toBe(1)
+    expect(scale?.y).toBe(1)
 
     stageWheel(stage, 3, 'down')
     scale = rootGroup.scale()!
-    expect(+scale?.x.toFixed(2)).toBe(1 - 3 * 0.05)
-    expect(+scale?.y.toFixed(2)).toBe(1 - 3 * 0.05)
+    expect(scale?.x).toBe(1 - 3 * 0.05)
+    expect(scale?.y).toBe(1 - 3 * 0.05)
   })
 
   it('factory command and destroy', async () => {

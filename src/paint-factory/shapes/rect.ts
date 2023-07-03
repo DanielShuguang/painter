@@ -20,7 +20,7 @@ export class DrawRect extends DrawBase {
         return
       }
 
-      startPos = getStagePosition(e.evt)
+      startPos = getStagePosition(e.evt, this.rootGroup?.getStage())
       rect = new Rect({
         ...this._options.nodeConfig,
         ...startPos
@@ -31,7 +31,7 @@ export class DrawRect extends DrawBase {
     stage?.on('mousemove.drawRect', (e: KonvaEventObject<MouseEvent>) => {
       if (!rect) return
 
-      const endPos = getStagePosition(e.evt)
+      const endPos = getStagePosition(e.evt, this.rootGroup?.getStage())
       const size = {
         height: endPos.y - startPos.y,
         width: endPos.x - startPos.x

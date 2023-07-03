@@ -61,7 +61,7 @@ export class DrawText extends DrawBase {
       }
 
       eventBus.emit(HideTextEditorEvent)
-      startPos = getStagePosition(e.evt)
+      startPos = getStagePosition(e.evt, stage)
       group = new Group({ name: textGroupName, ...startPos })
       textBox = new Rect({ name: textRectName, stroke: activeStroke, dash: [10, 5] })
       group.add(textBox)
@@ -73,7 +73,7 @@ export class DrawText extends DrawBase {
     stage?.on('mousemove.drawText', (e: KonvaEventObject<MouseEvent>) => {
       if (!group || !text || !textBox) return
 
-      const endPos = getStagePosition(e.evt)
+      const endPos = getStagePosition(e.evt, stage)
       const size = {
         height: endPos.y - startPos.y,
         width: endPos.x - startPos.x

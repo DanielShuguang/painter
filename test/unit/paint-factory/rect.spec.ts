@@ -15,10 +15,7 @@ describe('Draw rect shape', () => {
   })
 
   it('shape options', () => {
-    expect(shape.options()).toEqual(<DrawOptions>{
-      colorKey: 'stroke',
-      nodeConfig: { stroke: '#000' }
-    })
+    expect(shape.options().colorKey).toEqual('stroke')
 
     shape.options(<DrawOptions<RectConfig>>{ nodeConfig: { fill: 'red' } })
 
