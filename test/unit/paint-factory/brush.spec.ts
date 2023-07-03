@@ -1,11 +1,11 @@
-import { DrawBrush, DrawOptions, DrawShapeType } from '@/paint-factory'
+import { BrushShape, DrawOptions, DrawShapeType } from '@/paint-factory'
 import { addStage, stageMouseClick, stageMouseMove } from '../test-utils'
 import { RectConfig } from 'konva/lib/shapes/Rect'
 import { Line } from 'konva/lib/shapes/Line'
 
 describe('Draw brush shape', () => {
   const { rootGroup, stage } = addStage()
-  const shape = new DrawBrush()
+  const shape = new BrushShape()
 
   it('init shape', () => {
     expect(shape.type).toBe(DrawShapeType.Brush)

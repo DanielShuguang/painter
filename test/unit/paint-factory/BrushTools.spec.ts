@@ -1,5 +1,5 @@
 import { FactoryKey } from '@/components/Layout/composition'
-import { DrawBrush, DrawShapeType, PaintFactory } from '@/paint-factory'
+import { BrushShape, DrawShapeType, PaintFactory } from '@/paint-factory'
 import { BrushTools } from '@/paint-factory/toolbars'
 import { mount } from '@vue/test-utils'
 import { NColorPicker, NInputNumber } from 'naive-ui'
@@ -33,7 +33,7 @@ describe('BrushTools test', () => {
 
   it('change brush width', async () => {
     const inputNumber = wrapper.findComponent(NInputNumber)
-    const shape = factory.currentShape as DrawBrush
+    const shape = factory.currentShape as BrushShape
 
     let brushWidth = 12
     inputNumber.vm.$emit('update:value', brushWidth)
@@ -47,7 +47,7 @@ describe('BrushTools test', () => {
   })
 
   it('change brush color', async () => {
-    const shape = factory.currentShape as DrawBrush
+    const shape = factory.currentShape as BrushShape
     const colorPicker = wrapper.findComponent(NColorPicker)
 
     let color = '#ccc'

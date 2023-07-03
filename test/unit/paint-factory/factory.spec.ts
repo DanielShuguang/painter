@@ -1,8 +1,8 @@
 import {
   CommandService,
   CommonCommands,
-  DrawCircle,
-  DrawLine,
+  CircleShape,
+  LineShape,
   DrawShapeType,
   PaintFactory
 } from '@/paint-factory'
@@ -30,14 +30,14 @@ describe('Shape factory test', () => {
     expect(factory.currentType).toBeNull()
 
     factory.active(DrawShapeType.Line)
-    expect(factory.currentShape).instanceOf(DrawLine)
+    expect(factory.currentShape).instanceOf(LineShape)
     expect(factory.currentType).toBe(DrawShapeType.Line)
     expect(shapeType).toBe(DrawShapeType.Line)
 
     cancel()
 
     factory.active(DrawShapeType.Circle)
-    expect(factory.currentShape).instanceOf(DrawCircle)
+    expect(factory.currentShape).instanceOf(CircleShape)
     expect(factory.currentType).toBe(DrawShapeType.Circle)
     expect(shapeType).not.toBe(DrawShapeType.Circle)
   })

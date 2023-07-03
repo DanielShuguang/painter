@@ -1,10 +1,10 @@
 import { KonvaEventObject } from 'konva/lib/Node'
-import { DrawBase, DrawOptions, DrawShapeType } from '../base'
+import { BaseShape, DrawOptions, DrawShapeType } from '../base'
 import { getStagePosition } from '@/utils/position'
 import { Line } from 'konva/lib/shapes/Line'
 import { LineConfig } from 'konva/lib/shapes/Line'
 
-export class DrawLine extends DrawBase {
+export class LineShape extends BaseShape {
   readonly type = DrawShapeType.Line
   protected _options: DrawOptions<LineConfig> = {
     colorKey: 'stroke',

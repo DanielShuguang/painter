@@ -1,4 +1,4 @@
-import { DrawOptions, DrawShapeType, DrawLine } from '@/paint-factory'
+import { DrawOptions, DrawShapeType, LineShape } from '@/paint-factory'
 import { addStage, stageMouseClick, stageMouseMove } from '../test-utils'
 import { RectConfig } from 'konva/lib/shapes/Rect'
 import { Line } from 'konva/lib/shapes/Line'
@@ -6,7 +6,7 @@ import { Stage } from 'konva/lib/Stage'
 
 describe('Draw line shape', () => {
   const { rootGroup, stage } = addStage()
-  const shape = new DrawLine()
+  const shape = new LineShape()
 
   it('init line shape', () => {
     expect(shape.type).toBe(DrawShapeType.Line)

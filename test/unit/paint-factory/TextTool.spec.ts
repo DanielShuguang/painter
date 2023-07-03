@@ -1,5 +1,5 @@
 import { FactoryKey } from '@/components/Layout/composition'
-import { PaintFactory, DrawShapeType, TextTools, DrawText } from '@/paint-factory'
+import { PaintFactory, DrawShapeType, TextTools, TextShape } from '@/paint-factory'
 import { mount } from '@vue/test-utils'
 import { addStage, triggerColorPicker } from '../test-utils'
 import OperationMenuBar from '@/components/OperationMenuBar.vue'
@@ -31,7 +31,7 @@ describe('TextTools test', () => {
   })
 
   it('change font style ', async () => {
-    const shape = factory.currentShape as DrawText
+    const shape = factory.currentShape as TextShape
     const styleSelect = wrapper.findComponent(NSelect)
 
     expect(shape.options().nodeConfig.fontStyle).toBe('normal')
@@ -48,7 +48,7 @@ describe('TextTools test', () => {
   })
 
   it('change font size', async () => {
-    const shape = factory.currentShape as DrawText
+    const shape = factory.currentShape as TextShape
     const numInput = wrapper.findComponent(NInputNumber)
 
     expect(shape.options().nodeConfig.fontSize).toBe(12)
@@ -65,7 +65,7 @@ describe('TextTools test', () => {
   })
 
   it('change font color', async () => {
-    const shape = factory.currentShape as DrawText
+    const shape = factory.currentShape as TextShape
     const colorPicker = wrapper.findComponent(NColorPicker)
 
     let color = '#ccc'

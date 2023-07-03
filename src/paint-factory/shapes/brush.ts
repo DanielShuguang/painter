@@ -1,11 +1,11 @@
 import { KonvaEventObject } from 'konva/lib/Node'
-import { DrawBase, DrawOptions, DrawShapeType } from '../base'
+import { BaseShape, DrawOptions, DrawShapeType } from '../base'
 import { getStagePosition } from '@/utils/position'
 import { Vector2d } from 'konva/lib/types'
 import { isEqual } from 'lodash-es'
 import { Line, LineConfig } from 'konva/lib/shapes/Line'
 
-export class DrawBrush extends DrawBase {
+export class BrushShape extends BaseShape {
   readonly type = DrawShapeType.Brush
   protected _options: DrawOptions<LineConfig> = {
     brushWidth: 4,

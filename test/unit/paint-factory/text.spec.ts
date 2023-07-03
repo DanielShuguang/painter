@@ -1,6 +1,6 @@
 import {
   DrawShapeType,
-  DrawText,
+  TextShape,
   SaveTextEvent,
   ShowTextEditorEvent,
   textGroupName,
@@ -15,7 +15,7 @@ import { Text } from 'konva/lib/shapes/Text'
 
 describe('Draw text shape', () => {
   const { rootGroup, stage } = addStage()
-  const shape = new DrawText()
+  const shape = new TextShape()
 
   it('init shape', () => {
     expect(shape.type).to.equal(DrawShapeType.Text)

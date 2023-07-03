@@ -1,11 +1,11 @@
-import { DrawEllipse, DrawOptions, DrawShapeType } from '@/paint-factory'
+import { EllipseShape, DrawOptions, DrawShapeType } from '@/paint-factory'
 import { addStage, stageMouseClick, stageMouseMove } from '../test-utils'
 import { RectConfig } from 'konva/lib/shapes/Rect'
 import { Ellipse } from 'konva/lib/shapes/Ellipse'
 
 describe('Draw ellipse shape', () => {
   const { rootGroup, stage } = addStage()
-  const shape = new DrawEllipse()
+  const shape = new EllipseShape()
 
   it('init shape', () => {
     expect(shape.type).toBe(DrawShapeType.Ellipse)

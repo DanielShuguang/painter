@@ -1,5 +1,5 @@
 import { Group } from 'konva/lib/Group'
-import { DrawBase, DrawShapeType } from './base'
+import { BaseShape, DrawShapeType } from './base'
 import {
   ArrowMove20Filled,
   Circle12Regular,
@@ -11,12 +11,12 @@ import {
 } from '@vicons/fluent'
 import { Component } from 'vue'
 import { Shape } from 'konva/lib/Shape'
-import { DrawRect, DrawCircle, DrawLine, DrawEllipse, DrawText, DrawBrush } from './shapes'
+import { RectShape, CircleShape, LineShape, EllipseShape, TextShape, BrushShape } from './shapes'
 import { BaseTools, BrushTools, TextTools } from './toolbars'
 import { MoveShape } from './tool-shapes'
 
 export interface ShapeItem {
-  shape: DrawBase
+  shape: BaseShape
   icon: Component
   tip?: string
   toolbar?: Component
@@ -26,11 +26,11 @@ export class PaintFactory {
   static shapeMap = new Map<DrawShapeType, ShapeItem>()
   static toolMap = new Map<DrawShapeType, ShapeItem>()
 
-  static registerShape(shape: DrawBase, info: Omit<ShapeItem, 'shape'>) {
+  static registerShape(shape: BaseShape, info: Omit<ShapeItem, 'shape'>) {
     this.shapeMap.set(shape.type, { shape, ...info })
   }
 
-  static registerTool(shape: DrawBase, info: Omit<ShapeItem, 'shape' | 'toolbar'>) {
+  static registerTool(shape: BaseShape, info: Omit<ShapeItem, 'shape' | 'toolbar'>) {
     this.toolMap.set(shape.type, { shape, ...info })
   }
 
@@ -144,28 +144,28 @@ export class PaintFactory {
 
 PaintFactory.registerTool(new MoveShape(), { icon: ArrowMove20Filled })
 
-PaintFactory.registerShape(new DrawRect(), {
+PaintFactory.registerShape(new RectShape(), {
   icon: RectangleLandscape12Regular,
   tip: '矩形',
   toolbar: BaseTools
 })
-PaintFactory.registerShape(new DrawCircle(), {
+PaintFactory.registerShape(new CircleShape(), {
   icon: Circle12Regular,
   tip: '圆形',
   toolbar: BaseTools
 })
-PaintFactory.registerShape(new DrawLine(), { icon: Line24Filled, tip: '直线', toolbar: BaseTools })
-PaintFactory.registerShape(new DrawEllipse(), {
+PaintFactory.registerShape(new LineShape(), { icon: Line24Filled, tip: '直线', toolbar: BaseTools })
+PaintFactory.registerShape(new EllipseShape(), {
   icon: Oval16Regular,
   tip: '椭圆',
   toolbar: BaseTools
 })
-PaintFactory.registerShape(new DrawText(), {
+PaintFactory.registerShape(new TextShape(), {
   icon: DrawText20Regular,
   tip: '文字',
   toolbar: TextTools
 })
-PaintFactory.registerShape(new DrawBrush(), {
+PaintFactory.registerShape(new BrushShape(), {
   icon: PaintBrush16Regular,
   tip: '笔刷',
   toolbar: BrushTools

@@ -1,10 +1,10 @@
-import { DrawCircle, DrawOptions, DrawShapeType } from '@/paint-factory'
+import { CircleShape, DrawOptions, DrawShapeType } from '@/paint-factory'
 import { addStage, stageMouseClick, stageMouseMove } from '../test-utils'
 import { Circle, CircleConfig } from 'konva/lib/shapes/Circle'
 
 describe('Draw circle shape', () => {
   const { rootGroup, stage } = addStage()
-  const shape = new DrawCircle()
+  const shape = new CircleShape()
 
   it('init circle shape', () => {
     expect(shape.type).toBe(DrawShapeType.Circle)

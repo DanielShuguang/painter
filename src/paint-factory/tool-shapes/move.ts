@@ -1,9 +1,9 @@
 import { KonvaEventObject } from 'konva/lib/Node'
-import { DrawBase, DrawShapeType } from '../base'
+import { BaseShape, DrawShapeType } from '../base'
 import { Vector2d } from 'konva/lib/types'
 import { getStagePosition } from '@/utils/position'
 
-export class MoveShape extends DrawBase {
+export class MoveShape extends BaseShape {
   readonly type = DrawShapeType.Move
   private initialPos?: Vector2d
 

@@ -1,9 +1,9 @@
-import { DrawBase, DrawShapeType } from '../base'
+import { BaseShape, DrawShapeType } from '../base'
 import { getStagePosition } from '@/utils/position'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { Rect } from 'konva/lib/shapes/Rect'
 
-export class DrawRect extends DrawBase {
+export class RectShape extends BaseShape {
   readonly type = DrawShapeType.Rect
 
   protected mount() {

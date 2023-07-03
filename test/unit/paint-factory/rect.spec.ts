@@ -1,10 +1,10 @@
-import { DrawRect, DrawOptions, DrawShapeType } from '@/paint-factory'
+import { RectShape, DrawOptions, DrawShapeType } from '@/paint-factory'
 import { addStage, stageMouseClick, stageMouseMove } from '../test-utils'
 import { Rect, RectConfig } from 'konva/lib/shapes/Rect'
 
 describe('Draw rect shape', () => {
   const { rootGroup, stage } = addStage()
-  const shape = new DrawRect()
+  const shape = new RectShape()
 
   it('init shape', () => {
     expect(shape.type).toBe(DrawShapeType.Rect)

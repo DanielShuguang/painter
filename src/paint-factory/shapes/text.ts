@@ -1,5 +1,5 @@
 import { Rect } from 'konva/lib/shapes/Rect'
-import { ChangeColorEvent, DrawBase, DrawOptions, DrawShapeType } from '../base'
+import { ChangeColorEvent, BaseShape, DrawOptions, DrawShapeType } from '../base'
 import { Text, TextConfig } from 'konva/lib/shapes/Text'
 import { nanoid } from 'nanoid'
 import { KonvaEventObject } from 'konva/lib/Node'
@@ -20,7 +20,7 @@ export const textGroupName = 'text-group'
 export const textRectName = 'text-border-rect'
 export const textName = 'text-content'
 
-export class DrawText extends DrawBase {
+export class TextShape extends BaseShape {
   readonly type = DrawShapeType.Text
 
   protected _options: DrawOptions<TextConfig> = {

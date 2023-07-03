@@ -31,7 +31,7 @@ export enum DrawShapeType {
   Select = 'select'
 }
 
-export abstract class DrawBase {
+export abstract class BaseShape {
   protected _options: DrawOptions = {
     colorKey: 'stroke',
     nodeConfig: { stroke: '#000', strokeWidth: 2 }
