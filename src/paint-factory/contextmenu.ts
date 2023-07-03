@@ -15,6 +15,7 @@ export class ContextmenuService {
 
   private menuMap = new Map<string, ContextmenuOption>()
   private rootGroup?: Group
+  private isActive = true
 
   constructor() {
     if (!ContextmenuService.instance) {
@@ -27,6 +28,8 @@ export class ContextmenuService {
     this.rootGroup = group
     const stage = this.rootGroup.getStage()
     stage?.off('contextmenu').on('contextmenu', e => {
+      if (!this.isActive) return
+
       const menuList: MenuOption[] = []
 
       this.menuMap.forEach(menu => {
@@ -39,6 +42,10 @@ export class ContextmenuService {
         eventBus.emit(ContextmenuEvent, e, menuList)
       }
     })
+  }
+
+  toggle(active: boolean) {
+    this.isActive = active
   }
 
   registerMenu(menu: ContextmenuOption) {
