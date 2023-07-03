@@ -66,6 +66,8 @@ export function useDrawCache(factory: PaintFactory) {
   })
 
   useLocalEventBus(CleanCacheEvent, () => {
+    cache.value.forEach(el => el.node.destroy())
+    backup.value.forEach(el => el.node.destroy())
     cache.value.length = 0
     backup.value.length = 0
   })
