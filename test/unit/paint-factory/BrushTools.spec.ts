@@ -15,7 +15,11 @@ describe('BrushTools test', () => {
       provide: { [FactoryKey as symbol]: factory }
     }
   })
-  factory.setRoot(rootGroup).active(DrawShapeType.Brush)
+  factory.setRoot(rootGroup)
+
+  beforeEach(() => {
+    factory.active(DrawShapeType.Brush)
+  })
 
   it('active toolbar', async () => {
     factory.active(DrawShapeType.Text)
