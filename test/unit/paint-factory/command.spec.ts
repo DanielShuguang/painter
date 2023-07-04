@@ -30,11 +30,14 @@ it('CommandService test', () => {
   stage.fire(command2, rect2)
   expect(result).toBe(rect2)
 
+  result = null
+  service.unregisterCommand(command1)
+  stage.fire(command1, rect)
+  expect(result).not.toBe(rect)
+
   service.cleanCommands()
 
   result = null
-  stage.fire(command1, rect)
-  expect(result).not.toBe(rect)
   stage.fire(command2, rect2)
   expect(result).not.toBe(rect2)
 })

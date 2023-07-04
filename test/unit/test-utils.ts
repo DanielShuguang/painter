@@ -6,6 +6,7 @@ import { Vector2d } from 'konva/lib/types'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { Shape } from 'konva/lib/Shape'
 import { VueWrapper } from '@vue/test-utils'
+import { RootGroupId } from '@/components/PaintBoard/composition'
 
 export function addStage(size = { height: 2000, width: 2000 }) {
   const root = document.createElement('div')
@@ -17,7 +18,7 @@ export function addStage(size = { height: 2000, width: 2000 }) {
   const stage = new Stage({ container: root, ...size })
   const layer = new Layer({ id: 'main-layer' })
   stage.add(layer)
-  const rootGroup = new Group({ id: 'main-group' })
+  const rootGroup = new Group({ id: RootGroupId })
   layer.add(rootGroup)
 
   return { stage, layer, rootGroup }

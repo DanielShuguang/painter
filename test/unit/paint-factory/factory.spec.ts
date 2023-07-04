@@ -12,6 +12,8 @@ import { Circle } from 'konva/lib/shapes/Circle'
 import { Shape } from 'konva/lib/Shape'
 import { eventBus } from '@/utils/eventBus'
 import { ShowDialogEvent } from '@/components/Layout/composition'
+import { Rect } from 'konva/lib/shapes/Rect'
+import { positionByScale } from '@/utils/position'
 
 describe('Shape factory test', () => {
   const { rootGroup, stage } = addStage()
@@ -60,6 +62,7 @@ describe('Shape factory test', () => {
     stageMouseClick(stage, { x: 1400, y: 1400 })
 
     expect(currentNode).instanceOf(Circle)
+    rootGroup.destroyChildren()
   })
 
   it('factory scale event', async () => {
@@ -77,6 +80,36 @@ describe('Shape factory test', () => {
     scale = rootGroup.scale()!
     expect(scale?.x).toBe(1 - 3 * 0.05)
     expect(scale?.y).toBe(1 - 3 * 0.05)
+
+    rootGroup.scale({ x: 1, y: 1 })
+  })
+
+  it('scale and drag', () => {
+    rootGroup.position({ x: 100, y: 100 })
+    factory.active(DrawShapeType.Rect)
+
+    stageMouseClick(stage, { x: 100, y: 150 })
+    stageMouseMove(stage, { x: 300, y: 450 })
+    stageMouseClick(stage, { x: 300, y: 450 })
+    expect(rootGroup.findOne<Rect>('Rect').position()).toEqual({ x: 100 - 100, y: 150 - 100 })
+    rootGroup.destroyChildren()
+
+    rootGroup.position({ x: 0, y: 0 })
+    rootGroup.scale({ x: 1.5, y: 1.5 })
+    stageMouseClick(stage, { x: 100, y: 150 })
+    stageMouseMove(stage, { x: 300, y: 450 })
+    stageMouseClick(stage, { x: 300, y: 450 })
+    let expPos = positionByScale({ x: 100, y: 150 }, stage)
+    expect(rootGroup.findOne<Rect>('Rect').position()).toEqual(expPos)
+    rootGroup.destroyChildren()
+
+    rootGroup.position({ x: 100, y: 100 })
+    rootGroup.scale({ x: 1.5, y: 1.5 })
+    stageMouseClick(stage, { x: 100, y: 150 })
+    stageMouseMove(stage, { x: 300, y: 450 })
+    stageMouseClick(stage, { x: 300, y: 450 })
+    expPos = positionByScale({ x: 100 - 100, y: 150 - 100 }, stage)
+    expect(rootGroup.findOne<Rect>('Rect').position()).toEqual(expPos)
   })
 
   it('factory command and destroy', async () => {

@@ -1,6 +1,6 @@
 import { FactoryKey } from '@/components/Layout/composition'
 import PaintBoard from '@/components/PaintBoard/PaintBoard.vue'
-import { DrawShapeType, PaintFactory } from '@/paint-factory'
+import { CommonCommands, DrawShapeType, PaintFactory } from '@/paint-factory'
 import { mount } from '@vue/test-utils'
 import { Group } from 'konva/lib/Group'
 import { nodeContextmenu, stageMouseClick, stageMouseMove, wait } from '../test-utils'
@@ -8,10 +8,11 @@ import { nextTick } from 'vue'
 import { Stage } from 'konva/lib/Stage'
 import { Text } from 'konva/lib/shapes/Text'
 import { MenuOption, NMenu } from 'naive-ui'
-
-const factory = new PaintFactory()
+import { ContextmenuService } from '@/paint-factory/contextmenu'
 
 describe('PaintBoard component test', () => {
+  const factory = new PaintFactory()
+  const contextService = new ContextmenuService()
   const wrapper = mount(PaintBoard, {
     global: {
       provide: {
@@ -19,7 +20,8 @@ describe('PaintBoard component test', () => {
       }
     }
   })
-  const stage = factory.getRoot()?.getStage()!
+  const rootGroup = factory.getRoot()!
+  const stage = rootGroup.getStage()!
 
   it('init factory', () => {
     expect(factory.getRoot()).instanceOf(Group)
@@ -66,7 +68,6 @@ describe('PaintBoard component test', () => {
   it('trigger contextmenu', async () => {
     stage.dispatchEvent(new MouseEvent('contextmenu', { clientX: 100, clientY: 100 }))
     await nextTick()
-
     expect(document.querySelector('.contextmenu-modal')).toBeTruthy()
     expect(document.querySelectorAll('.n-menu-item').length).toBe(1)
 
@@ -83,19 +84,40 @@ describe('PaintBoard component test', () => {
     expect(document.querySelectorAll('.n-menu-item').length).toBe(2)
 
     const menuEl = wrapper.findComponent(NMenu)
-    const options = menuEl.getCurrentComponent().props.options as MenuOption[]
-    const deleteOpt = options.find(el => el.key?.toString().includes('delete'))
+    const options = menuEl.props().options as MenuOption[]
+    const deleteOpt = options.find(el => el.key === CommonCommands.Delete)
     expect(deleteOpt).toBeTruthy()
 
     let hasRun = false
     const handle = () => (hasRun = true)
-    stage.on(deleteOpt?.key?.toString() || '', handle)
+    stage.on(CommonCommands.Delete, handle)
 
-    menuEl.getCurrentComponent().emit('update-value', deleteOpt?.key, deleteOpt)
+    menuEl.getCurrentComponent().emit('update-value', CommonCommands.Delete, deleteOpt)
     await nextTick()
     expect(hasRun).toBeTruthy()
     expect(document.querySelector('.contextmenu-modal')).toBeFalsy()
-    stage.off(deleteOpt?.key?.toString() || '', handle)
+    stage.off(CommonCommands.Delete, handle)
+
+    contextService.unregisterMenu(CommonCommands.Delete)
+    nodeContextmenu(stage, text)
+    await nextTick()
+
+    expect(document.querySelectorAll('.n-menu-item').length).toBe(1)
+    dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+
+    contextService.toggle(false)
+    nodeContextmenu(stage, text)
+    await nextTick()
+    expect(document.querySelector('.contextmenu-modal')).toBeFalsy()
+    expect(document.querySelectorAll('.n-menu-item').length).toBe(0)
+
+    contextService.toggle(true)
+    nodeContextmenu(stage, text)
+    await nextTick()
+    expect(document.querySelector('.contextmenu-modal')).toBeTruthy()
+    expect(document.querySelectorAll('.n-menu-item').length).toBe(1)
+
+    text.destroy()
   })
 })
 

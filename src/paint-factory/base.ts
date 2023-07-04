@@ -192,8 +192,8 @@ function commonSelector(node: Node) {
 
 function scaleSelector(node: Node) {
   const stage = node instanceof Stage ? node : node.getStage()
-  const scale = stage?.findOne(`#${RootGroupId}`).scale()
-  return scale?.x !== 1 || scale?.y !== 1
+  const scale = stage?.findOne(`#${RootGroupId}`).scale() || { x: 1, y: 1 }
+  return scale.x !== 1 || scale.y !== 1
 }
 
 function deleteShape(node: Node) {
