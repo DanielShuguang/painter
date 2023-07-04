@@ -56,6 +56,12 @@ export class ContextmenuService {
     return this
   }
 
+  unregisterMenu(key: string) {
+    this.menuMap.delete(key)
+
+    return this
+  }
+
   cleanMenu() {
     this.menuMap.clear()
 

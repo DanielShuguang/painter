@@ -46,6 +46,13 @@ export class CommandService {
     return this
   }
 
+  unregisterCommand(key: string) {
+    this.commands.delete(key)
+    this.rootGroup?.getStage()?.off(key)
+
+    return this
+  }
+
   cleanCommands() {
     this.commands.forEach((_, key) => this.rootGroup?.getStage()?.off(key))
     this.commands.clear()
