@@ -1,5 +1,5 @@
 import { BaseShape, DrawShapeType } from '../base'
-import { getStagePosition } from '@/utils/position'
+import { getRelativePosition } from '@/utils/position'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { Rect } from 'konva/lib/shapes/Rect'
 
@@ -20,7 +20,7 @@ export class RectShape extends BaseShape {
         return
       }
 
-      startPos = getStagePosition(e.evt, this.rootGroup?.getStage())
+      startPos = getRelativePosition(e.evt, stage, true)
       rect = new Rect({
         ...this._options.nodeConfig,
         ...startPos
@@ -31,7 +31,7 @@ export class RectShape extends BaseShape {
     stage?.on('mousemove.drawRect', (e: KonvaEventObject<MouseEvent>) => {
       if (!rect) return
 
-      const endPos = getStagePosition(e.evt, this.rootGroup?.getStage())
+      const endPos = getRelativePosition(e.evt, stage, true)
       const size = {
         height: endPos.y - startPos.y,
         width: endPos.x - startPos.x

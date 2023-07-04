@@ -3,10 +3,10 @@ import { Stage } from 'konva/lib/Stage'
 import { Vector2d } from 'konva/lib/types'
 
 /**
- * 获取相对于 stage 的坐标信息
+ * 获取相对于 dom 的坐标信息
  * @param ev
  */
-export function getStagePosition(ev: MouseEvent, stage?: Stage | null) {
+export function getRelativePosition(ev: MouseEvent, stage?: Stage | null, inGroup?: boolean) {
   const dom = ev.target as HTMLElement | null
   const domRect = dom?.getBoundingClientRect() || { x: 0, y: 0 }
   const position = {
@@ -14,7 +14,15 @@ export function getStagePosition(ev: MouseEvent, stage?: Stage | null) {
     y: Math.abs(ev.pageY - domRect.y)
   }
 
-  return stage ? positionByScale(position, stage) : position
+  const res = stage ? positionByScale(position, stage) : position
+  const rootGroup = stage?.findOne(`#${RootGroupId}`)
+  if (inGroup && rootGroup) {
+    const rootPos = rootGroup.position()
+
+    res.x -= rootPos.x
+    res.y -= rootPos.y
+  }
+  return res
 }
 
 export function positionByScale(position: Vector2d, stage: Stage) {

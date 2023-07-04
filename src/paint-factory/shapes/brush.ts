@@ -1,6 +1,6 @@
 import { KonvaEventObject } from 'konva/lib/Node'
 import { BaseShape, DrawOptions, DrawShapeType } from '../base'
-import { getStagePosition } from '@/utils/position'
+import { getRelativePosition } from '@/utils/position'
 import { Vector2d } from 'konva/lib/types'
 import { isEqual } from 'lodash-es'
 import { Line, LineConfig } from 'konva/lib/shapes/Line'
@@ -24,7 +24,7 @@ export class BrushShape extends BaseShape {
     stage?.on('mousedown.drawBrush', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0) return
 
-      const position = getStagePosition(e.evt, stage)
+      const position = getRelativePosition(e.evt, stage, true)
       lastPosition = position
       isDrawing = true
       line = new Line({
@@ -43,7 +43,7 @@ export class BrushShape extends BaseShape {
     stage?.on('mousemove.drawBrush', (e: KonvaEventObject<MouseEvent>) => {
       if (!isDrawing || !line) return
 
-      const position = getStagePosition(e.evt, stage)
+      const position = getRelativePosition(e.evt, stage, true)
       if (isEqual(position, lastPosition)) return
 
       lastPosition = position

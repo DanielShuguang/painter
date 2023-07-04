@@ -2,7 +2,7 @@ import { Ellipse } from 'konva/lib/shapes/Ellipse'
 import { BaseShape, DrawShapeType } from '../base'
 import { Circle } from 'konva/lib/shapes/Circle'
 import { KonvaEventObject } from 'konva/lib/Node'
-import { getStagePosition } from '@/utils/position'
+import { getRelativePosition } from '@/utils/position'
 
 export class EllipseShape extends BaseShape {
   readonly type = DrawShapeType.Ellipse
@@ -24,7 +24,7 @@ export class EllipseShape extends BaseShape {
         return
       }
 
-      startPos = getStagePosition(e.evt, stage)
+      startPos = getRelativePosition(e.evt, stage, true)
       startPoint = new Circle({
         ...startPos,
         fill: '#000',
@@ -42,7 +42,7 @@ export class EllipseShape extends BaseShape {
     stage?.on('mousemove.drawEllipse', (e: KonvaEventObject<MouseEvent>) => {
       if (!ellipse || !startPoint) return
 
-      const endPos = getStagePosition(e.evt, stage)
+      const endPos = getRelativePosition(e.evt, stage, true)
       const rectSize = {
         height: endPos.y - startPos.y,
         width: endPos.x - startPos.x

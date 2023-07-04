@@ -28,7 +28,7 @@ test('color picker', async ({ page }) => {
   await colorPicker?.click()
   expect(await colorPicker?.isVisible()).toBeTruthy()
 
-  const colorInput = await page.$('.n-input__input-el')
+  const colorInput = await page.$('.n-color-picker-control .n-input__input-el')
 
   const newColor = '#ccc'
   await colorInput?.focus()

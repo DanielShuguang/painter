@@ -29,6 +29,7 @@ describe('Draw brush shape', () => {
 
     expect(events.mousedown).toBeDefined()
     expect(events.mousemove).toBeDefined()
+    expect(events.mouseup).toBeDefined()
 
     const mousedownEvent = events.mousedown.find(el => el.name === 'drawBrush')
     expect(mousedownEvent).toBeDefined()

@@ -1,6 +1,6 @@
 import { KonvaEventObject } from 'konva/lib/Node'
 import { BaseShape, DrawOptions, DrawShapeType } from '../base'
-import { getStagePosition } from '@/utils/position'
+import { getRelativePosition } from '@/utils/position'
 import { Line } from 'konva/lib/shapes/Line'
 import { LineConfig } from 'konva/lib/shapes/Line'
 
@@ -20,7 +20,7 @@ export class LineShape extends BaseShape {
       if (e.evt.button !== 0) return
 
       if (!line) {
-        startPos = getStagePosition(e.evt, stage)
+        startPos = getRelativePosition(e.evt, stage, true)
         line = new Line({
           lineCap: 'round',
           lineJoin: 'round',
@@ -38,7 +38,7 @@ export class LineShape extends BaseShape {
     stage?.on('mousemove.drawLine', (e: KonvaEventObject<MouseEvent>) => {
       if (!line) return
 
-      const endPos = getStagePosition(e.evt, stage)
+      const endPos = getRelativePosition(e.evt, stage, true)
       const oldPoints = line.points()
       const len = oldPoints.length
       oldPoints[len - 2] = endPos.x

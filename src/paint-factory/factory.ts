@@ -142,7 +142,7 @@ export class PaintFactory {
   }
 }
 
-PaintFactory.registerTool(new MoveShape(), { icon: ArrowMove20Filled })
+PaintFactory.registerTool(new MoveShape(), { icon: ArrowMove20Filled, tip: '拖动' })
 
 PaintFactory.registerShape(new RectShape(), {
   icon: RectangleLandscape12Regular,
