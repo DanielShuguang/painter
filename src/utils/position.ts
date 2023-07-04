@@ -14,15 +14,14 @@ export function getRelativePosition(ev: MouseEvent, stage?: Stage | null, inGrou
     y: Math.abs(ev.pageY - domRect.y)
   }
 
-  const res = stage ? positionByScale(position, stage) : position
   const rootGroup = stage?.findOne(`#${RootGroupId}`)
   if (inGroup && rootGroup) {
     const rootPos = rootGroup.position()
-
-    res.x -= rootPos.x
-    res.y -= rootPos.y
+    position.x -= rootPos.x
+    position.y -= rootPos.y
   }
-  return res
+
+  return stage ? positionByScale(position, stage) : position
 }
 
 export function positionByScale(position: Vector2d, stage: Stage) {
