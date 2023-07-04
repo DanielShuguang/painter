@@ -31,6 +31,9 @@ export enum DrawShapeType {
   Select = 'select'
 }
 
+export type MenuRegisterFn = (menu: ContextmenuOption) => void
+export type CommandRegisterFn = (key: string, handler: () => void) => void
+
 export abstract class BaseShape {
   protected _options: DrawOptions = {
     colorKey: 'stroke',
@@ -126,9 +129,9 @@ export abstract class BaseShape {
     return this
   }
 
-  protected registerMenus(_reigister: (menu: ContextmenuOption) => void) {}
+  protected registerMenus(_reigister: MenuRegisterFn) {}
 
-  protected registerCommands(_reigister: (key: string, handler: () => void) => void) {}
+  protected registerCommands(_reigister: CommandRegisterFn) {}
 
   destroy() {
     this.deactivate()
@@ -141,18 +144,10 @@ export abstract class BaseShape {
   protected abstract unmount(): void
 }
 
-function commonSelector(node: Node) {
-  const isMainContainer =
-    node instanceof Stage ||
-    node instanceof Layer ||
-    (node instanceof Group && node.id() === RootGroupId)
-
-  return !isMainContainer
-}
-
 export enum CommonCommands {
   Delete = 'base-common:delete',
-  Clean = 'base-common:clean'
+  Clean = 'base-common:clean',
+  ResetScale = 'base-common:reset-scale'
 }
 
 function registerCommonMenus(service: ContextmenuService) {
@@ -169,8 +164,13 @@ function registerCommonMenus(service: ContextmenuService) {
     })
     .registerMenu({
       key: CommonCommands.Clean,
-      label: '重置',
+      label: '清空',
       selector: () => true
+    })
+    .registerMenu({
+      key: CommonCommands.ResetScale,
+      label: '重置缩放',
+      selector: scaleSelector
     })
 }
 
@@ -178,6 +178,22 @@ function registerCommonCommands(service: CommandService) {
   service
     .registerCommand(CommonCommands.Delete, deleteShape)
     .registerCommand(CommonCommands.Clean, cleanPainter)
+    .registerCommand(CommonCommands.ResetScale, resetScale)
+}
+
+function commonSelector(node: Node) {
+  const isMainContainer =
+    node instanceof Stage ||
+    node instanceof Layer ||
+    (node instanceof Group && node.id() === RootGroupId)
+
+  return !isMainContainer
+}
+
+function scaleSelector(node: Node) {
+  const stage = node instanceof Stage ? node : node.getStage()
+  const scale = stage?.findOne(`#${RootGroupId}`).scale()
+  return scale?.x !== 1 || scale?.y !== 1
 }
 
 function deleteShape(node: Node) {
@@ -198,4 +214,9 @@ function cleanPainter(node: Node) {
       eventBus.emit(CleanCacheEvent)
     }
   })
+}
+
+function resetScale(node: Node) {
+  const stage = node instanceof Stage ? node : node.getStage()
+  stage?.findOne(`#${RootGroupId}`)?.scale({ x: 1, y: 1 })
 }
