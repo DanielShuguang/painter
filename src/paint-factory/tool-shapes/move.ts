@@ -38,7 +38,6 @@ export class MoveShape extends BaseShape {
         x: startRootPos.x + offset.x,
         y: startRootPos.y + offset.y
       })
-      console.log('group position', currentPos, this.rootGroup.position())
     })
 
     stage?.on('mouseup.moveShape', (e: KonvaEventObject<MouseEvent>) => {
