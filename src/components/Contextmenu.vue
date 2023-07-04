@@ -82,6 +82,6 @@ defineExpose({
   background: #fff;
   z-index: 100;
   box-shadow: 0 0 4px 1px #000;
-  transition: transform 0.05s ease;
+  transition: all 0.05s ease;
 }
 </style>

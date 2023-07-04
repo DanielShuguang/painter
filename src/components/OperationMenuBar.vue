@@ -51,6 +51,19 @@ export default defineComponent({
             actions={['confirm']}
             onComplete={handleChangeColor}
           />
+          <div class="title">操作</div>
+          <div class="draw-shape-selection">
+            {Array.from(PaintFactory.toolMap.entries()).map(([k, v]) => (
+              <span
+                class={classNames('tool-icon', { 'is-active': activeShape.value === k })}
+                key={k}
+                title={v.tip}
+                onClick={() => activeShape.value !== k && handleChangeShape(k)}
+              >
+                <Icon>{h(v.icon)}</Icon>
+              </span>
+            ))}
+          </div>
           <div class="title">形状</div>
           <div class="draw-shape-selection">
             {Array.from(PaintFactory.shapeMap.entries()).map(([k, v]) => (
@@ -93,7 +106,8 @@ export default defineComponent({
   font-weight: bold;
 }
 
-.shape-icon {
+.shape-icon,
+.tool-icon {
   display: inline-flex;
   padding: 3px 5px;
   border-radius: 5px;
