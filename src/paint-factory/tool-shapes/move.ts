@@ -1,7 +1,12 @@
 import { KonvaEventObject } from 'konva/lib/Node'
-import { BaseShape, DrawShapeType } from '../base'
+import { BaseShape, CommandRegisterFn, DrawShapeType, MenuRegisterFn } from '../base'
 import { Vector2d } from 'konva/lib/types'
-import { getStagePosition } from '@/utils/position'
+import { getRelativePosition } from '@/utils/position'
+import { isEqual } from 'lodash-es'
+
+export enum MoveCommands {
+  ResetPosition = 'move-common:reset-position'
+}
 
 export class MoveShape extends BaseShape {
   readonly type = DrawShapeType.Move
@@ -13,30 +18,29 @@ export class MoveShape extends BaseShape {
     let startPos: Vector2d | null = null
     let startRootPos: Vector2d | null = null
 
-    stage?.on('mousedown', (e: KonvaEventObject<MouseEvent>) => {
+    stage?.on('mousedown.moveShape', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0 || !this.rootGroup) return
 
       isMoving = true
-      startPos = getStagePosition(e.evt, stage)
+      startPos = getRelativePosition(e.evt, stage, true)
       startRootPos = this.rootGroup.position()
     })
 
-    stage?.on('mousemove', (e: KonvaEventObject<MouseEvent>) => {
+    stage?.on('mousemove.moveShape', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0 || !isMoving || !this.rootGroup || !startPos || !startRootPos) return
 
-      const pos = getStagePosition(e.evt, stage)
+      const currentPos = getRelativePosition(e.evt, stage, true)
       const offset = {
-        x: pos.x - startPos.x,
-        y: pos.y - startPos.y
+        x: currentPos.x - startPos.x,
+        y: currentPos.y - startPos.y
       }
-      const originPos = this.rootGroup.position()
       this.rootGroup.position({
-        x: originPos.x + offset.x,
-        y: originPos.y + offset.x
+        x: startRootPos.x + offset.x,
+        y: startRootPos.y + offset.y
       })
     })
 
-    stage?.on('mouseup', (e: KonvaEventObject<MouseEvent>) => {
+    stage?.on('mouseup.moveShape', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0 || !this.rootGroup || !startPos || !startRootPos) return
 
       isMoving = false
@@ -45,12 +49,13 @@ export class MoveShape extends BaseShape {
     })
 
     this.initOriginPosition()
-    this.positionResetEvent()
     this.changeMouseCursor()
   }
 
   protected unmount() {
-    this.contextmenuService.toggle(true)
+    const stage = this.rootGroup?.getStage()
+
+    stage?.off('mousedown.moveShape').off('mousemove.moveShape').off('mouseup.moveShape')
   }
 
   private changeMouseCursor() {
@@ -58,7 +63,7 @@ export class MoveShape extends BaseShape {
 
     if (container) {
       const originStyle = container.style.cursor
-      container.style.cursor = 'pointer'
+      container.style.cursor = 'grab'
 
       this.disposeEvents.push(() => {
         container.style.cursor = originStyle
@@ -72,14 +77,18 @@ export class MoveShape extends BaseShape {
     }
   }
 
-  private positionResetEvent() {
-    this.rootGroup?.getStage()?.on('keyup', (e: KonvaEventObject<KeyboardEvent>) => {
-      const evt = e.evt
-      if (evt.ctrlKey && evt.key === 'r') {
-        if (this.initialPos) {
-          this.rootGroup?.position(this.initialPos)
-        }
-        evt.preventDefault()
+  protected registerMenus(reigister: MenuRegisterFn): void {
+    reigister({
+      key: MoveCommands.ResetPosition,
+      label: '重置拖动',
+      selector: () => this.isActive() && !isEqual(this.rootGroup?.position(), this.initialPos)
+    })
+  }
+
+  protected registerCommands(reigister: CommandRegisterFn): void {
+    reigister(MoveCommands.ResetPosition, () => {
+      if (this.initialPos) {
+        this.rootGroup?.position(this.initialPos)
       }
     })
   }
