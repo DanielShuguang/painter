@@ -22,14 +22,14 @@ export class MoveShape extends BaseShape {
       if (e.evt.button !== 0 || !this.rootGroup) return
 
       isMoving = true
-      startPos = getRelativePosition(e.evt, stage, true)
+      startPos = getRelativePosition(e.evt, stage)
       startRootPos = this.rootGroup.position()
     })
 
     stage?.on('mousemove.moveShape', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0 || !isMoving || !this.rootGroup || !startPos || !startRootPos) return
 
-      const currentPos = getRelativePosition(e.evt, stage, true)
+      const currentPos = getRelativePosition(e.evt, stage)
       const offset = {
         x: currentPos.x - startPos.x,
         y: currentPos.y - startPos.y
@@ -38,6 +38,7 @@ export class MoveShape extends BaseShape {
         x: startRootPos.x + offset.x,
         y: startRootPos.y + offset.y
       })
+      console.log('group position', currentPos, this.rootGroup.position())
     })
 
     stage?.on('mouseup.moveShape', (e: KonvaEventObject<MouseEvent>) => {
