@@ -2,7 +2,7 @@ import { FactoryKey } from '@/components/Layout/composition'
 import { BrushShape, DrawShapeType, PaintFactory } from '@/paint-factory'
 import { BrushTools } from '@/paint-factory/toolbars'
 import { mount } from '@vue/test-utils'
-import { NColorPicker, NInputNumber } from 'naive-ui'
+import { NColorPicker, NInputNumber, NMessageProvider } from 'naive-ui'
 import { nextTick } from 'vue'
 import { addStage, triggerColorPicker } from '../test-utils'
 import OperationMenuBar from '@/components/OperationMenuBar.vue'
@@ -10,11 +10,16 @@ import OperationMenuBar from '@/components/OperationMenuBar.vue'
 describe('BrushTools test', () => {
   const { rootGroup } = addStage()
   const factory = new PaintFactory()
-  const wrapper = mount(OperationMenuBar, {
-    global: {
-      provide: { [FactoryKey as symbol]: factory }
+  const wrapper = mount(
+    <NMessageProvider>
+      <OperationMenuBar />
+    </NMessageProvider>,
+    {
+      global: {
+        provide: { [FactoryKey as symbol]: factory }
+      }
     }
-  })
+  )
   factory.setRoot(rootGroup)
 
   beforeEach(() => {

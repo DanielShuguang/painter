@@ -4,16 +4,21 @@ import { mount } from '@vue/test-utils'
 import { addStage } from '../test-utils'
 import OperationMenuBar from '@/components/OperationMenuBar.vue'
 import { nextTick } from 'vue'
-import { NInputNumber } from 'naive-ui'
+import { NInputNumber, NMessageProvider } from 'naive-ui'
 
 describe('BaseTools test', () => {
   const { rootGroup } = addStage()
   const factory = new PaintFactory()
-  const wrapper = mount(OperationMenuBar, {
-    global: {
-      provide: { [FactoryKey as symbol]: factory }
+  const wrapper = mount(
+    <NMessageProvider>
+      <OperationMenuBar />
+    </NMessageProvider>,
+    {
+      global: {
+        provide: { [FactoryKey as symbol]: factory }
+      }
     }
-  })
+  )
   factory.setRoot(rootGroup)
 
   beforeEach(() => {

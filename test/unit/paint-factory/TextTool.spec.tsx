@@ -4,16 +4,21 @@ import { mount } from '@vue/test-utils'
 import { addStage, triggerColorPicker } from '../test-utils'
 import OperationMenuBar from '@/components/OperationMenuBar.vue'
 import { nextTick } from 'vue'
-import { NColorPicker, NInputNumber, NSelect } from 'naive-ui'
+import { NColorPicker, NInputNumber, NMessageProvider, NSelect } from 'naive-ui'
 
 describe('TextTools test', () => {
   const { rootGroup } = addStage()
   const factory = new PaintFactory()
-  const wrapper = mount(OperationMenuBar, {
-    global: {
-      provide: { [FactoryKey as symbol]: factory }
+  const wrapper = mount(
+    <NMessageProvider>
+      <OperationMenuBar />
+    </NMessageProvider>,
+    {
+      global: {
+        provide: { [FactoryKey as symbol]: factory }
+      }
     }
-  })
+  )
   factory.setRoot(rootGroup)
 
   beforeEach(() => {

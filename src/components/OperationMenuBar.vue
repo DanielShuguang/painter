@@ -1,10 +1,11 @@
 <script lang="tsx">
 import { ChangeColorEvent, DrawShapeType, PaintFactory } from '@/paint-factory'
-import { NColorPicker } from 'naive-ui'
+import { NButton, NColorPicker, useMessage } from 'naive-ui'
 import { IconConfigProvider, Icon } from '@vicons/utils'
 import { FactoryKey } from './Layout/composition'
 import { defineComponent, h, inject, ref } from 'vue'
 import classNames from 'classnames'
+import { downloadCanvas } from '@/utils/downloadCanvas'
 
 export default defineComponent({
   setup() {
@@ -12,6 +13,8 @@ export default defineComponent({
     const activeShape = ref<DrawShapeType | null>(DrawShapeType.Rect)
 
     const factory = inject(FactoryKey)
+
+    const message = useMessage()
 
     function handleChangeShape(type: DrawShapeType) {
       factory?.active(type).emit(ChangeColorEvent, { color: colorValue.value })
@@ -25,6 +28,7 @@ export default defineComponent({
       activeShape.value = type
     })
 
+    /** 渲染当前 shape 对应的操作栏 */
     function currentToolbar() {
       if (activeShape.value) {
         const shape = PaintFactory.shapeMap.get(activeShape.value)
@@ -39,6 +43,16 @@ export default defineComponent({
       }
 
       return null
+    }
+
+    /** 保存当前画板内容 */
+    function handleSaveImage() {
+      const canvas = document.querySelector('canvas')
+      if (canvas) {
+        downloadCanvas(canvas, 'paint.jpg').catch(err => {
+          message.error(err)
+        })
+      }
     }
 
     return () => (
@@ -79,6 +93,9 @@ export default defineComponent({
           </div>
           {currentToolbar()}
         </IconConfigProvider>
+        <NButton class="download-btn" type="primary" onClick={handleSaveImage}>
+          保存
+        </NButton>
       </div>
     )
   }
@@ -87,6 +104,7 @@ export default defineComponent({
 
 <style scoped lang="less">
 .operation-menu-bar {
+  position: relative;
   width: 200px;
   height: 100%;
   margin-right: 3px;
@@ -97,6 +115,7 @@ export default defineComponent({
 .draw-shape-selection {
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 6px;
 }
 
 .title {
@@ -121,5 +140,11 @@ export default defineComponent({
     box-shadow: inset 0 0 4px green;
     cursor: auto;
   }
+}
+
+.download-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
 }
 </style>

@@ -20,7 +20,7 @@ import { KonvaEventObject, Node } from 'konva/lib/Node'
 import { getRelativePosition } from '@/utils/position'
 
 export const RootGroupId = 'root-group'
-
+ 
 /**
  * stage 的尺寸要根据浏览器尺寸进行变化
  * @param stage
