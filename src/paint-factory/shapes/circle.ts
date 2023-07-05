@@ -39,6 +39,7 @@ export class CircleShape extends BaseShape {
     stage?.on('mousemove.drawCircle', (e: KonvaEventObject<MouseEvent>) => {
       if (!circle || !startPoint) return
 
+      // 圆形的坐标起始点为圆心，因此需要根据半径和初始坐标进行计算得出实际的圆心坐标
       const endPos = getRelativePosition(e.evt, stage, true)
       const rectSize = {
         height: endPos.y - startPos.y,

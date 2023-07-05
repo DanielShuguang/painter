@@ -11,6 +11,7 @@ export class EllipseShape extends BaseShape {
     const stage = this.rootGroup?.getStage()
     let startPos = { x: 0, y: 0 }
     let ellipse: Ellipse | null = null
+    // 开始绘图时，绘制初始点作为旋转等操作的基准点
     let startPoint: Circle | null = null
 
     stage?.on('click.drawEllipse', (e: KonvaEventObject<MouseEvent>) => {
@@ -42,6 +43,9 @@ export class EllipseShape extends BaseShape {
     stage?.on('mousemove.drawEllipse', (e: KonvaEventObject<MouseEvent>) => {
       if (!ellipse || !startPoint) return
 
+      // 原 ellipse 图形只能绘制垂直方向的椭圆
+      // 这里使用勾股定理和反三角函数算出需要旋转的角度
+      // 椭圆的水平方向半径固定为垂直半径的两倍
       const endPos = getRelativePosition(e.evt, stage, true)
       const rectSize = {
         height: endPos.y - startPos.y,
@@ -50,6 +54,7 @@ export class EllipseShape extends BaseShape {
       const height = rectSize.height / 2
       const width = rectSize.width / 2
       const ry = Math.pow(Math.pow(height, 2) + Math.pow(width, 2), 0.5)
+      // retateDeg 需要的单位为 °，需要用圆周率进行换算
       const rotateDeg = (Math.atan(rectSize.height / rectSize.width) / Math.PI) * 180 || 0
 
       ellipse

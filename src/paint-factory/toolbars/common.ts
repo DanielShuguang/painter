@@ -4,6 +4,10 @@ import { FactoryKey } from '@/components/Layout/composition'
 import { cloneDeep, merge } from 'lodash-es'
 import { ShapeConfig } from 'konva/lib/Shape'
 
+/**
+ * 通用的 shape options 更新逻辑
+ * @param defaultOpt 默认的配置项
+ */
 export function useShapeOptions<Config extends ShapeConfig = ShapeConfig>(
   defaultOpt: DrawOptions<Config>
 ) {

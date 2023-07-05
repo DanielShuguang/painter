@@ -21,6 +21,7 @@ export class MoveShape extends BaseShape {
     stage?.on('mousedown.moveShape', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0 || !this.rootGroup) return
 
+      // 开始拖拽
       isMoving = true
       startPos = getRelativePosition(e.evt, stage)
       startRootPos = this.rootGroup.position()
@@ -29,6 +30,7 @@ export class MoveShape extends BaseShape {
     stage?.on('mousemove.moveShape', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0 || !isMoving || !this.rootGroup || !startPos || !startRootPos) return
 
+      // 根据拖动起始位置计算差值
       const currentPos = getRelativePosition(e.evt, stage)
       const offset = {
         x: currentPos.x - startPos.x,
@@ -43,6 +45,7 @@ export class MoveShape extends BaseShape {
     stage?.on('mouseup.moveShape', (e: KonvaEventObject<MouseEvent>) => {
       if (e.evt.button !== 0 || !this.rootGroup || !startPos || !startRootPos) return
 
+      // 结束拖拽,释放资源
       isMoving = false
       startPos = null
       startRootPos = null

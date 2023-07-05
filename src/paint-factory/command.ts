@@ -15,6 +15,10 @@ export class CommandService {
     return CommandService.instance
   }
 
+  /**
+   * 激活使用命令模块
+   * @param group 依附的根 group
+   */
   activeCommands(group: Group) {
     this.rootGroup = group
 
@@ -24,6 +28,11 @@ export class CommandService {
     return this
   }
 
+  /**
+   * 注册命令
+   * @param key 唯一的 key
+   * @param handler
+   */
   registerCommand(key: string, handler: (node: any) => void) {
     if (this.commands.has(key)) return this
 

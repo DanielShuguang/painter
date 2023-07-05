@@ -5,6 +5,8 @@ import { Vector2d } from 'konva/lib/types'
 /**
  * 获取相对于 dom 的坐标信息
  * @param ev
+ * @param stage 需要进行相对定位的 stage
+ * @param inGroup 是否需要根据 group 的位置和缩放比例二次计算
  */
 export function getRelativePosition(ev: MouseEvent, stage?: Stage | null, inGroup?: boolean) {
   const dom = ev.target as HTMLElement | null

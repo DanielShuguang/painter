@@ -41,7 +41,9 @@ export abstract class BaseShape {
   }
   protected rootGroup?: Group
   protected _isActive = false
+  /** 绘图完成时需要触发的事件列表 */
   protected eventList: Array<(shape: Shape | Group) => void> = []
+  /** 图形工具失活时需要进行的任务，可用于资源清理和事件卸载 */
   protected disposeEvents: Array<() => void> = []
   protected readonly commandService = new CommandService()
   protected readonly contextmenuService = new ContextmenuService()
@@ -51,6 +53,10 @@ export abstract class BaseShape {
     this._options = merge(this._options, opt || {})
   }
 
+  /**
+   * 设置根 group，所有的图形均存放在该 group 下
+   * @param group
+   */
   setGroup(group: Group) {
     this.rootGroup = group
 
@@ -68,6 +74,10 @@ export abstract class BaseShape {
     return this._isActive
   }
 
+  /**
+   * 注册绘图完成后的通知事件
+   * @param handler
+   */
   drawListener(handler: (node: Shape | Group) => void) {
     this.eventList.push(handler)
 
@@ -86,6 +96,7 @@ export abstract class BaseShape {
     return this
   }
 
+  /** 根据事件修改绘图工具的颜色信息 */
   protected changeColor() {
     this.rootGroup?.getStage()?.on(ChangeColorEvent, (e: any) => {
       const key = this.options().colorKey
@@ -129,9 +140,19 @@ export abstract class BaseShape {
     return this
   }
 
-  protected registerMenus(_reigister: MenuRegisterFn) {}
+  /**
+   * 批量注册菜单
+   * @param reigister 注册函数
+   */
+  // @ts-expect-error
+  protected registerMenus(reigister: MenuRegisterFn) {}
 
-  protected registerCommands(_reigister: CommandRegisterFn) {}
+  /**
+   * 批量注册命令
+   * @param reigister 注册函数
+   */
+  // @ts-expect-error
+  protected registerCommands(reigister: CommandRegisterFn) {}
 
   destroy() {
     this.deactivate()
@@ -150,6 +171,7 @@ export enum CommonCommands {
   ResetScale = 'base-common:reset-scale'
 }
 
+/** 所有情况的下公共菜单 */
 function registerCommonMenus(service: ContextmenuService) {
   service
     .registerMenu({
@@ -174,6 +196,7 @@ function registerCommonMenus(service: ContextmenuService) {
     })
 }
 
+/** 所有情况的下公共命令 */
 function registerCommonCommands(service: CommandService) {
   service
     .registerCommand(CommonCommands.Delete, deleteShape)

@@ -22,14 +22,28 @@ export interface ShapeItem {
   toolbar?: Component
 }
 
+/**
+ * 画板的创建工厂
+ * @class 单例类
+ */
 export class PaintFactory {
   static shapeMap = new Map<DrawShapeType, ShapeItem>()
   static toolMap = new Map<DrawShapeType, ShapeItem>()
 
+  /**
+   * 注册图形工具
+   * @param shape 工具类实例
+   * @param info
+   */
   static registerShape(shape: BaseShape, info: Omit<ShapeItem, 'shape'>) {
     this.shapeMap.set(shape.type, { shape, ...info })
   }
 
+  /**
+   * 注册操作工具
+   * @param shape 工具类实例
+   * @param info
+   */
   static registerTool(shape: BaseShape, info: Omit<ShapeItem, 'shape' | 'toolbar'>) {
     this.toolMap.set(shape.type, { shape, ...info })
   }
@@ -83,6 +97,10 @@ export class PaintFactory {
     this.disposeEvents.push(() => document.removeEventListener('keyup', handler))
   }
 
+  /**
+   * 在绘制任意图形时触发一轮事件
+   * @param handler
+   */
   drawListener(handler: (node: Shape | Group) => void) {
     this.getAllShapes().forEach(ins => {
       this.disposeEvents.push(ins.shape.drawListener(handler))

@@ -32,6 +32,7 @@ export class BrushShape extends BaseShape {
         hitStrokeWidth: (this._options.brushWidth ?? 4) + 8,
         strokeWidth: this._options.brushWidth,
         points: [position.x, position.y],
+        // 根据选择的笔刷类型进行绘制
         lineCap: this._options.brushType === 'round' ? 'round' : 'square',
         lineJoin: this._options.brushType === 'round' ? 'round' : 'bevel',
         tension: 1

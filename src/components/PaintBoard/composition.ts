@@ -21,6 +21,11 @@ import { getRelativePosition } from '@/utils/position'
 
 export const RootGroupId = 'root-group'
 
+/**
+ * stage 的尺寸要根据浏览器尺寸进行变化
+ * @param stage
+ * @param resizeFn 重绘时需要触发的动作
+ */
 export function usePaintBoardSize(stage: ShallowRef<Stage | null>, resizeFn: () => void) {
   const containerRef = shallowRef<HTMLDivElement>()
 
@@ -48,6 +53,7 @@ export function usePaintBoardSize(stage: ShallowRef<Stage | null>, resizeFn: () 
   return { containerRef, containerSize }
 }
 
+/** text shape 绘制后所需的输入框 */
 export function useTextEditor() {
   const showEditor = ref(false)
   const inputValue = ref('')

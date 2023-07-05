@@ -24,6 +24,10 @@ export class ContextmenuService {
     return ContextmenuService.instance
   }
 
+  /**
+   * 激活右键菜单模块
+   * @param group 依附的根 group
+   */
   activeMenus(group: Group) {
     this.rootGroup = group
     const stage = this.rootGroup.getStage()
@@ -44,6 +48,10 @@ export class ContextmenuService {
     })
   }
 
+  /**
+   * 禁用或激活右键菜单
+   * @param active
+   */
   toggle(active: boolean) {
     this.isActive = active
   }

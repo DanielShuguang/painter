@@ -1,5 +1,5 @@
 import { Rect } from 'konva/lib/shapes/Rect'
-import { ChangeColorEvent, BaseShape, DrawOptions, DrawShapeType } from '../base'
+import { BaseShape, DrawOptions, DrawShapeType } from '../base'
 import { Text, TextConfig } from 'konva/lib/shapes/Text'
 import { nanoid } from 'nanoid'
 import { KonvaEventObject } from 'konva/lib/Node'
@@ -34,12 +34,6 @@ export class TextShape extends BaseShape {
     }
   }
 
-  protected changeColor() {
-    this.rootGroup?.getStage()?.on(ChangeColorEvent, (e: any) => {
-      this._options.nodeConfig.fill = e.color
-    })
-  }
-
   protected mount() {
     const stage = this.rootGroup?.getStage()
     let startPos = { x: 0, y: 0 }
@@ -60,6 +54,7 @@ export class TextShape extends BaseShape {
         return
       }
 
+      // 关闭原来可能存在的输入框，进行新的绘图动作
       eventBus.emit(HideTextEditorEvent)
       startPos = getRelativePosition(e.evt, stage, true)
       group = new Group({ name: textGroupName, ...startPos })
