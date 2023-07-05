@@ -53,7 +53,7 @@ export class TextShape extends BaseShape {
       if (textBox && text && group) {
         openTextInput(group, textBox, text)
         this.eventList.forEach(fn => fn(group!))
-        textBox.stroke('transparent')
+        textBox.destroy()
         group = null
         textBox = null
         text = null
@@ -112,7 +112,7 @@ export class TextShape extends BaseShape {
         const text = this.rootGroup?.findOne<Text>(`#${id}`)
         text?.text(val)
         const rect = text?.parent?.findOne<Rect>('Rect')
-        rect?.stroke('transparent')
+        rect?.destroy()
       })
   }
 }

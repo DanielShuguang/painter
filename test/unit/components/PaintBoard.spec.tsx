@@ -7,19 +7,24 @@ import { nodeContextmenu, stageMouseClick, stageMouseMove, wait } from '../test-
 import { nextTick } from 'vue'
 import { Stage } from 'konva/lib/Stage'
 import { Text } from 'konva/lib/shapes/Text'
-import { MenuOption, NMenu } from 'naive-ui'
+import { MenuOption, NMenu, NMessageProvider } from 'naive-ui'
 import { ContextmenuService } from '@/paint-factory/contextmenu'
 
 describe('PaintBoard component test', () => {
   const factory = new PaintFactory()
   const contextService = new ContextmenuService()
-  const wrapper = mount(PaintBoard, {
-    global: {
-      provide: {
-        [FactoryKey as symbol]: factory
+  const wrapper = mount(
+    <NMessageProvider>
+      <PaintBoard />
+    </NMessageProvider>,
+    {
+      global: {
+        provide: {
+          [FactoryKey as symbol]: factory
+        }
       }
     }
-  })
+  )
   const rootGroup = factory.getRoot()!
   const stage = rootGroup.getStage()!
 

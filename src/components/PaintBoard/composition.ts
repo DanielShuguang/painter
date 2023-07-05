@@ -14,7 +14,7 @@ import {
   watch
 } from 'vue'
 import Contextmenu from '../Contextmenu.vue'
-import { MenuOption } from 'naive-ui'
+import { MenuOption, useMessage } from 'naive-ui'
 import { FactoryKey } from '../Layout/composition'
 import { KonvaEventObject, Node } from 'konva/lib/Node'
 import { getRelativePosition } from '@/utils/position'
@@ -54,14 +54,19 @@ export function useTextEditor() {
   const activeId = ref('')
   const style = shallowRef<StyleValue>({ left: '0', top: '0', height: '0', width: '0' })
   const editorRef = ref<HTMLTextAreaElement>()
+  const message = useMessage()
 
   function setInputEvents() {
     editorRef.value?.addEventListener('keyup', ev => {
       if (ev.key === 'Escape') {
         showEditor.value = false
       } else if (ev.key === 'Enter' && ev.ctrlKey) {
-        eventBus.emit(SaveTextEvent, activeId.value, inputValue.value)
-        showEditor.value = false
+        if (!inputValue.value) {
+          message.warning('请输入文字内容！')
+        } else {
+          eventBus.emit(SaveTextEvent, activeId.value, inputValue.value)
+          showEditor.value = false
+        }
       }
     })
   }

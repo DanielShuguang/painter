@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { NConfigProvider, NDialogProvider, zhCN } from 'naive-ui'
+import { NConfigProvider, NDialogProvider, NMessageProvider, zhCN } from 'naive-ui'
 import Layout from './components/Layout/Layout.vue'
 </script>
 
 <template>
   <NConfigProvider class="n-provider" :locale="zhCN">
     <NDialogProvider>
-      <Layout />
+      <NMessageProvider>
+        <Layout />
+      </NMessageProvider>
     </NDialogProvider>
   </NConfigProvider>
 </template>

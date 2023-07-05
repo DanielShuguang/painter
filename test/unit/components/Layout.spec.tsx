@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout/Layout.vue'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { NDialogProvider } from 'naive-ui'
+import { NDialogProvider, NMessageProvider } from 'naive-ui'
 import OperationMenuBar from '@/components/OperationMenuBar.vue'
 import { CommonCommands, DrawShapeType, PaintFactory } from '@/paint-factory'
 import { stageMouseClick, stageMouseMove } from '../test-utils'
@@ -13,7 +13,9 @@ describe('Layout component test', () => {
   const factory = new PaintFactory()
   const wrapper = mount(
     <NDialogProvider>
-      <Layout />
+      <NMessageProvider>
+        <Layout />
+      </NMessageProvider>
     </NDialogProvider>
   )
   const rootGroup = factory.getRoot()!
