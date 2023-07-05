@@ -75,9 +75,9 @@ export function useTextEditor() {
       height: size.height + 'px',
       width: size.width + 'px',
       fontFamily: text.fontFamily(),
-      fontSize: text.fontSize(),
+      fontSize: text.fontSize() + 'px',
       fontStyle: text.fontStyle(),
-      padding: text.padding(),
+      padding: text.padding() + 'px',
       color: text.fill()
     }
     showEditor.value = true

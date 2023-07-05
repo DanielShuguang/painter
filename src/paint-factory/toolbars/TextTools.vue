@@ -10,7 +10,9 @@ const selectOpt: SelectMixedOption[] = ['normal', 'bold', 'italic', 'italic bold
 }))
 
 const { options } = useShapeOptions<TextConfig>({
-  nodeConfig: {}
+  nodeConfig: {
+    fontSize: 12
+  }
 })
 </script>
 
