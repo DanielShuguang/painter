@@ -1,4 +1,4 @@
-import { inject, onMounted, onUnmounted, reactive, watch } from 'vue'
+import { inject, onMounted, onUnmounted, ref, watch } from 'vue'
 import { DrawOptions } from '../base'
 import { FactoryKey } from '@/components/Layout/composition'
 import { cloneDeep, merge } from 'lodash-es'
@@ -12,7 +12,7 @@ export function useShapeOptions<Config extends ShapeConfig = ShapeConfig>(
   defaultOpt: DrawOptions<Config>
 ) {
   const factory = inject(FactoryKey)!
-  const options = reactive(cloneDeep(defaultOpt))
+  const options = ref(cloneDeep(defaultOpt))
   let cancenFn: (() => void) | undefined
 
   function getShape() {
@@ -20,10 +20,10 @@ export function useShapeOptions<Config extends ShapeConfig = ShapeConfig>(
   }
 
   watch(
-    () => options,
-    () => {
+    options,
+    newVal => {
       const shape = getShape()
-      shape.options(cloneDeep(options))
+      shape.options(cloneDeep(newVal))
     },
     { deep: true }
   )
@@ -31,12 +31,13 @@ export function useShapeOptions<Config extends ShapeConfig = ShapeConfig>(
   onMounted(() => {
     const opt = factory.currentShape?.options() as DrawOptions<Config> | undefined
     if (opt) {
-      merge(options, opt)
+      options.value = merge(options.value, opt)
     }
 
     cancenFn = factory.onChangeShape(() => {
       const opt = factory.currentShape?.options()
-      merge(options, defaultOpt, opt || {})
+      options.value = defaultOpt as any
+      options.value = merge(options.value, opt || {})
     })
   })
 

@@ -10,8 +10,7 @@ export class BrushShape extends BaseShape {
   protected _options: DrawOptions<LineConfig> = {
     brushWidth: 4,
     brushType: 'round',
-    colorKey: 'stroke',
-    nodeConfig: { stroke: '#000' }
+    nodeConfig: {}
   }
 
   protected mount() {

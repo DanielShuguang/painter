@@ -3,6 +3,7 @@ import { BaseShape, DrawShapeType } from '../base'
 import { Circle } from 'konva/lib/shapes/Circle'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { getRelativePosition } from '@/utils/position'
+import { isString } from 'lodash-es'
 
 export class EllipseShape extends BaseShape {
   readonly type = DrawShapeType.Ellipse
@@ -26,9 +27,10 @@ export class EllipseShape extends BaseShape {
       }
 
       startPos = getRelativePosition(e.evt, stage, true)
+      const fillColor = this._options.nodeConfig.stroke
       startPoint = new Circle({
         ...startPos,
-        fill: '#000',
+        fill: isString(fillColor) ? fillColor : '#000',
         radius: 3
       })
       ellipse = new Ellipse({

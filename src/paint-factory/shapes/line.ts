@@ -7,8 +7,7 @@ import { LineConfig } from 'konva/lib/shapes/Line'
 export class LineShape extends BaseShape {
   readonly type = DrawShapeType.Line
   protected _options: DrawOptions<LineConfig> = {
-    colorKey: 'stroke',
-    nodeConfig: { stroke: '#000', hitStrokeWidth: 10 }
+    nodeConfig: { hitStrokeWidth: 10 }
   }
 
   protected mount() {

@@ -2,6 +2,7 @@ import { KonvaEventObject } from 'konva/lib/Node'
 import { BaseShape, DrawShapeType } from '../base'
 import { getRelativePosition } from '@/utils/position'
 import { Circle } from 'konva/lib/shapes/Circle'
+import { isString } from 'lodash-es'
 
 export class CircleShape extends BaseShape {
   readonly type = DrawShapeType.Circle
@@ -24,9 +25,10 @@ export class CircleShape extends BaseShape {
       }
 
       startPos = getRelativePosition(e.evt, stage, true)
+      const fillColor = this._options.nodeConfig.stroke
       startPoint = new Circle({
         ...startPos,
-        fill: '#000',
+        fill: isString(fillColor) ? fillColor : '#000',
         radius: 3
       })
       circle = new Circle({

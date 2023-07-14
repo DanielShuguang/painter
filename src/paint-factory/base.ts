@@ -10,10 +10,13 @@ import { Node } from 'konva/lib/Node'
 import { eventBus } from '@/utils/eventBus'
 import { CleanCacheEvent, ShowDialogEvent, UpdateCacheEvent } from '@/components/Layout/composition'
 
+export type ColorKey = 'stroke' | 'fill'
+const colorKeys: ColorKey[] = ['fill', 'stroke']
+
 export interface DrawOptions<Config extends ShapeConfig = ShapeConfig> {
   brushWidth?: number
   brushType?: 'round' | 'square'
-  colorKey?: string | string[]
+  colorKey?: ColorKey | ColorKey[]
   nodeConfig: Config
 }
 
@@ -100,6 +103,10 @@ export abstract class BaseShape {
   protected changeColor() {
     this.rootGroup?.getStage()?.on(ChangeColorEvent, (e: any) => {
       const key = this.options().colorKey
+      colorKeys.forEach(k => {
+        delete this._options.nodeConfig[k]
+      })
+
       if (!key) {
         this._options.nodeConfig.stroke = e.color
       } else if (typeof key === 'string') {
