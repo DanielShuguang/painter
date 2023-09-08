@@ -232,16 +232,19 @@ function deleteShape(node: Node) {
 }
 
 function cleanPainter(node: Node) {
-  eventBus.emit(ShowDialogEvent, 'warning', {
-    title: '警告',
-    content: '重置将删除所有的图形且不可恢复',
-    positiveText: '确定',
-    negativeText: '取消',
-    onPositiveClick: () => {
-      const stage = node.getStage()
-      const rootGroup = stage?.findOne<Group>(`#${RootGroupId}`)
-      rootGroup?.destroyChildren()
-      eventBus.emit(CleanCacheEvent)
+  eventBus.emit(ShowDialogEvent, {
+    type: 'warning',
+    opt: {
+      title: '警告',
+      content: '重置将删除所有的图形且不可恢复',
+      positiveText: '确定',
+      negativeText: '取消',
+      onPositiveClick: () => {
+        const stage = node.getStage()
+        const rootGroup = stage?.findOne<Group>(`#${RootGroupId}`)
+        rootGroup?.destroyChildren()
+        eventBus.emit(CleanCacheEvent, undefined)
+      }
     }
   })
 }

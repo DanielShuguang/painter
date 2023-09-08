@@ -11,8 +11,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
-      // runtime: path.resolve(__dirname, './wailsjs/runtime'),
-      // backend: path.resolve(__dirname, './wailsjs/go')
     }
   },
   test: {

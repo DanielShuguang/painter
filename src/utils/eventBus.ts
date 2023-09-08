@@ -4,7 +4,7 @@ import { isDev } from './env'
 const eventMap = new Map<InjectionKey<unknown> | string, Function>()
 
 export const eventBus = {
-  on<T extends any[]>(event: InjectionKey<T> | string, handler: (...args: T) => void) {
+  on<T = any>(event: InjectionKey<T> | string, handler: (arg: T) => void) {
     if (eventMap.has(event) && isDev) {
       console.warn(`事件 ${event.toString()} 已存在，原有事件将被覆盖`)
     }
@@ -14,17 +14,17 @@ export const eventBus = {
       eventMap.delete(event)
     }
   },
-  emit<T extends any[]>(event: InjectionKey<T> | string, ...args: T) {
+  emit<T = any>(event: InjectionKey<T> | string, arg: T) {
     const fn = eventMap.get(event)
     if (fn) {
-      fn(...args)
+      fn(arg)
       return true
     }
     return false
   },
-  once<T extends any[]>(event: InjectionKey<T> | string, handler: (...args: T) => void) {
-    eventMap.set(event, (...args: T) => {
-      handler(...args)
+  once<T = any>(event: InjectionKey<T> | string, handler: (arg: T) => void) {
+    eventMap.set(event, (arg: T) => {
+      handler(arg)
       eventMap.delete(event)
     })
   },
@@ -43,9 +43,9 @@ export const eventBus = {
   }
 }
 
-export function useLocalEventBus<T extends any[]>(
+export function useLocalEventBus<T = any>(
   event: InjectionKey<T> | string,
-  handler: (...args: T) => void
+  handler: (arg: T) => void
 ) {
   onMounted(() => eventBus.on(event, handler))
 

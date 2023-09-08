@@ -43,7 +43,7 @@ export class ContextmenuService {
       })
 
       if (menuList.length) {
-        eventBus.emit(ContextmenuEvent, e, menuList)
+        eventBus.emit(ContextmenuEvent, { event: e, opts: menuList })
       }
     })
   }

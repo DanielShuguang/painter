@@ -9,11 +9,13 @@ import { Vector2d } from 'konva/lib/types'
 import { InjectionKey } from 'vue'
 import { eventBus } from '@/utils/eventBus'
 
-export const ShowTextEditorEvent: InjectionKey<
-  [Text, Vector2d, { height: number; width: number }]
-> = Symbol('show-text-editor')
-export const HideTextEditorEvent: InjectionKey<[]> = Symbol('hide-text-editor')
-export const SaveTextEvent: InjectionKey<[string, string]> = Symbol('save-text')
+export const ShowTextEditorEvent: InjectionKey<{
+  text: Text
+  pos: Vector2d
+  size: { height: number; width: number }
+}> = Symbol('show-text-editor')
+export const HideTextEditorEvent: InjectionKey<void> = Symbol('hide-text-editor')
+export const SaveTextEvent: InjectionKey<{ id: string; val: string }> = Symbol('save-text')
 
 const activeStroke = '#ccc'
 export const textGroupName = 'text-group'
@@ -55,7 +57,7 @@ export class TextShape extends BaseShape {
       }
 
       // 关闭原来可能存在的输入框，进行新的绘图动作
-      eventBus.emit(HideTextEditorEvent)
+      eventBus.emit(HideTextEditorEvent, undefined)
       startPos = getRelativePosition(e.evt, stage, true)
       group = new Group({ name: textGroupName, ...startPos })
       textBox = new Rect({ name: textRectName, stroke: activeStroke, dash: [10, 5] })
@@ -103,7 +105,7 @@ export class TextShape extends BaseShape {
 
   private textUpdateHandler() {
     !eventBus.exist(SaveTextEvent) &&
-      eventBus.on(SaveTextEvent, (id, val) => {
+      eventBus.on(SaveTextEvent, ({ id, val }) => {
         const text = this.rootGroup?.findOne<Text>(`#${id}`)
         text?.text(val)
         const rect = text?.parent?.findOne<Rect>('Rect')
@@ -130,13 +132,12 @@ function openTextInput(group: Group, rect: Rect, text: Text) {
     size.height = -size.height
   }
 
-  eventBus.emit(
-    ShowTextEditorEvent,
+  eventBus.emit(ShowTextEditorEvent, {
     text,
-    { x: position.x + borderWidth, y: position.y },
-    {
+    pos: { x: position.x + borderWidth, y: position.y },
+    size: {
       height: size.height - borderWidth * 3,
       width: size.width - borderWidth * 3.5
     }
-  )
+  })
 }

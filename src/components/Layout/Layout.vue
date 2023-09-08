@@ -12,7 +12,7 @@ const { dragRef, style, x, handleReset } = useSplitDrag()
 
 const dialog = useDialog()
 
-useLocalEventBus(ShowDialogEvent, (type, opt) => dialog[type](opt))
+useLocalEventBus(ShowDialogEvent, ({ type, opt }) => dialog[type](opt))
 </script>
 
 <template>

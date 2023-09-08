@@ -40,7 +40,7 @@ describe('Draw text shape', () => {
   })
 
   it('draw shape', () => {
-    eventBus.once(ShowTextEditorEvent, text => {
+    eventBus.once(ShowTextEditorEvent, ({ text }) => {
       expect(text.name()).toBe(textName)
     })
 
@@ -61,7 +61,7 @@ describe('Draw text shape', () => {
     expect(text.size()).toEqual(size)
 
     const content = 'hello world'
-    eventBus.emit(SaveTextEvent, text.id(), content)
+    eventBus.emit(SaveTextEvent, { id: text.id(), val: content })
     expect(text.text()).toBe(content)
 
     group.destroy()

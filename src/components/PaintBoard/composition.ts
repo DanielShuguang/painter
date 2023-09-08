@@ -20,7 +20,7 @@ import { KonvaEventObject, Node } from 'konva/lib/Node'
 import { getRelativePosition } from '@/utils/position'
 
 export const RootGroupId = 'root-group'
- 
+
 /**
  * stage 的尺寸要根据浏览器尺寸进行变化
  * @param stage
@@ -70,19 +70,19 @@ export function useTextEditor() {
         if (!inputValue.value) {
           message.warning('请输入文字内容！')
         } else {
-          eventBus.emit(SaveTextEvent, activeId.value, inputValue.value)
+          eventBus.emit(SaveTextEvent, { id: activeId.value, val: inputValue.value })
           showEditor.value = false
         }
       }
     })
   }
 
-  useLocalEventBus(ShowTextEditorEvent, (text, position, size) => {
+  useLocalEventBus(ShowTextEditorEvent, ({ text, pos, size }) => {
     activeId.value = text.id()
     inputValue.value = ''
     style.value = {
-      left: position.x + 'px',
-      top: position.y + 'px',
+      left: pos.x + 'px',
+      top: pos.y + 'px',
       height: size.height + 'px',
       width: size.width + 'px',
       fontFamily: text.fontFamily(),
@@ -105,8 +105,10 @@ export function useTextEditor() {
   return { showEditor, style, editorRef, inputValue }
 }
 
-export const ContextmenuEvent: InjectionKey<[KonvaEventObject<MouseEvent>, MenuOption[]]> =
-  Symbol('contextmenu-event')
+export const ContextmenuEvent: InjectionKey<{
+  event: KonvaEventObject<MouseEvent>
+  opts: MenuOption[]
+}> = Symbol('contextmenu-event')
 
 /** 控制舞台的右键菜单展示 */
 export function useStageContextmenu() {
@@ -116,9 +118,9 @@ export function useStageContextmenu() {
 
   const factory = inject(FactoryKey)
 
-  useLocalEventBus(ContextmenuEvent, (e, opts) => {
-    menuRef.value?.show(getRelativePosition(e.evt))
-    selectNode.value = e.target
+  useLocalEventBus(ContextmenuEvent, ({ event, opts }) => {
+    menuRef.value?.show(getRelativePosition(event.evt))
+    selectNode.value = event.target
     menuOptions.value = opts
   })
 

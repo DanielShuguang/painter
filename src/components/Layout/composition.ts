@@ -6,9 +6,10 @@ import { Shape } from 'konva/lib/Shape'
 import { DialogOptions } from 'naive-ui/es/dialog/src/DialogProvider'
 import { InjectionKey, ShallowRef, onMounted, onUnmounted, provide, ref, shallowRef } from 'vue'
 
-export const ShowDialogEvent: InjectionKey<
-  ['success' | 'warning' | 'error' | 'info', DialogOptions]
-> = Symbol('show-dialog-event')
+export const ShowDialogEvent: InjectionKey<{
+  type: 'success' | 'warning' | 'error' | 'info'
+  opt: DialogOptions
+}> = Symbol('show-dialog-event')
 
 export const FactoryKey: InjectionKey<Readonly<PaintFactory>> = Symbol('paint-factory')
 export function useMountFactory() {
@@ -30,8 +31,8 @@ export interface CacheItem {
 
 export const DrawCacheKey: InjectionKey<ShallowRef<Readonly<CacheItem[]>>> = Symbol('draw-cache')
 export const DrawBackupKey: InjectionKey<ShallowRef<Readonly<CacheItem[]>>> = Symbol('draw-backup')
-export const UpdateCacheEvent: InjectionKey<[CacheItem]> = Symbol('update-cache')
-export const CleanCacheEvent: InjectionKey<[]> = Symbol('clean-cache')
+export const UpdateCacheEvent: InjectionKey<CacheItem> = Symbol('update-cache')
+export const CleanCacheEvent: InjectionKey<void> = Symbol('clean-cache')
 
 const cacheCount = 20
 /**

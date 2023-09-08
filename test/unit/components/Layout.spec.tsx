@@ -97,7 +97,7 @@ describe('Layout component test', () => {
     expect(rootGroup.find('Rect').length).not.toBe(0)
 
     rootGroup.removeChildren()
-    eventBus.emit(CleanCacheEvent)
+    eventBus.emit(CleanCacheEvent, undefined)
     dispatchEvent(new KeyboardEvent('keyup', { key: 'z', ctrlKey: true }))
     await nextTick()
     expect(rootGroup.findOne('Rect')).toBeFalsy()

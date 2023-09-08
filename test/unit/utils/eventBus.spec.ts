@@ -34,7 +34,7 @@ describe('Event bus', () => {
 
   it('register a symbol event name', () => {
     const eventDesc = 'test-event'
-    const eventName: InjectionKey<[string]> = Symbol(eventDesc)
+    const eventName: InjectionKey<string> = Symbol(eventDesc)
     let result = ''
     eventBus.on(eventName, msg => {
       result = msg

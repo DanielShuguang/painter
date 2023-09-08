@@ -129,7 +129,7 @@ describe('Shape factory test', () => {
     expect(rootGroup.findOne(`#${nodeId}`)).not.toBe(node)
 
     let modalType = ''
-    eventBus.on(ShowDialogEvent, (type, opt) => {
+    eventBus.on(ShowDialogEvent, ({ type, opt }) => {
       modalType = type
       opt.onPositiveClick?.(new MouseEvent('click'))
     })

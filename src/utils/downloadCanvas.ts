@@ -4,7 +4,7 @@
  * @param filename 文件名，带后缀
  */
 export async function downloadCanvas(canvasEl: HTMLCanvasElement, filename: string) {
-  return new Promise((resolve, reject) => {
+  return new Promise<boolean>((resolve, reject) => {
     if (!canvasEl.toBlob) {
       reject('不支持下载')
     } else {
@@ -17,6 +17,8 @@ export async function downloadCanvas(canvasEl: HTMLCanvasElement, filename: stri
           alink.click()
           URL.revokeObjectURL(url)
           resolve(true)
+        } else {
+          reject('下载文件生成失败')
         }
       })
     }
